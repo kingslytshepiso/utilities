@@ -75,7 +75,7 @@ export default function LandingScreen() {
         {/* Features Grid */}
         <ThemedView style={[gutters.marginBottom.lg]}>
           <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
-            What's Included
+            What&apos;s Included
           </ThemedText>
 
           <View style={styles.featuresGrid}>
@@ -145,7 +145,7 @@ function FeatureCard({
   return (
     <Card style={[styles.featureCard, rounded.md, shadow.sm]}>
       <Card.Content style={[layout.center, gutters.padding.md]}>
-        <IconSymbol name={icon} size={32} color={theme.colors.primary} />
+        <IconSymbol name={icon as any} size={32} color={theme.colors.primary} />
         <ThemedText
           type="defaultSemiBold"
           style={[gutters.marginTop.sm, { textAlign: "center" }]}

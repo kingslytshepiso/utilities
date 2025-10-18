@@ -8,6 +8,8 @@ import { StatusBar } from "expo-status-bar";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 
+import { ProtectedRoute } from "@/components/auth/protected-route";
+import { AuthProvider } from "@/contexts/auth-context";
 import { ThemeProvider, useTheme } from "@/contexts/theme-context";
 
 export const unstable_settings = {
@@ -21,18 +23,21 @@ function RootNavigator() {
   return (
     <PaperProvider theme={theme}>
       <NavigationThemeProvider value={navigationTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="about" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="modal"
-            options={{
-              presentation: "modal",
-              title: "Example Modal",
-              headerShown: true,
-            }}
-          />
-        </Stack>
+        <ProtectedRoute>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="about" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="modal"
+              options={{
+                presentation: "modal",
+                title: "Example Modal",
+                headerShown: true,
+              }}
+            />
+            <Stack.Screen name="auth" options={{ headerShown: false }} />
+          </Stack>
+        </ProtectedRoute>
         <StatusBar style={isDark ? "light" : "dark"} />
       </NavigationThemeProvider>
     </PaperProvider>
@@ -42,7 +47,9 @@ function RootNavigator() {
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <RootNavigator />
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -6,6 +6,7 @@ A production-ready React Native starter template built with Expo, featuring a co
 
 - 🎨 **Material Design 3 Theming** - Built on React Native Paper with full MD3 support
 - 🌓 **Smart Theme Switching** - Light, dark, and system modes with persistence
+- 🔐 **Authentication System** - Production-ready auth with Supabase (see `variant-with-auth` branch)
 - 📱 **Cross-Platform** - Single codebase for iOS, Android, and Web
 - 🎯 **File-Based Routing** - Powered by Expo Router for intuitive navigation
 - 📐 **Utility Styling System** - Pre-built utilities for rapid development
@@ -339,15 +340,23 @@ function MyComponent() {
 
 [View all Paper components](https://reactnativepaper.com/docs/components/overview)
 
-## 🔮 Future Branches/Versions
+## 🌿 Branches
 
-This template is designed to be extended. Planned branches include:
+This template is designed to be extended. Available and planned branches:
 
-- **auth-firebase** - Firebase Authentication integration
-- **auth-supabase** - Supabase Authentication integration
-- **auth-clerk** - Clerk Authentication integration
-- **state-zustand** - Zustand state management setup
-- **state-redux** - Redux Toolkit state management setup
+### Available
+
+- **variant-with-auth** - ✅ Complete Supabase authentication system with responsive UI
+  - See [AUTH.md](./AUTH.md) for complete documentation
+  - Login, signup, password reset, OAuth
+  - Responsive UI for all screen sizes (mobile/tablet/desktop)
+  - Secure storage (SecureStore/localStorage)
+  - Abstract provider interface for easy backend switching
+
+### Planned
+
+- **state-management** - State management examples (Zustand, Redux)
+- **api-integration** - API client patterns and data fetching
 
 ## 🛠️ Development
 
