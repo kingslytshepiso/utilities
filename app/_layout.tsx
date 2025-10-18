@@ -1,24 +1,48 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider as NavigationThemeProvider,
+} from "@react-navigation/native";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { PaperProvider } from "react-native-paper";
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { ThemeProvider, useTheme } from "@/contexts/theme-context";
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: "index",
 };
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+function RootNavigator() {
+  const { theme, isDark } = useTheme();
+  const navigationTheme = isDark ? DarkTheme : DefaultTheme;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
+    <PaperProvider theme={theme}>
+      <NavigationThemeProvider value={navigationTheme}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="about" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{
+              presentation: "modal",
+              title: "Example Modal",
+              headerShown: true,
+            }}
+          />
+        </Stack>
+        <StatusBar style={isDark ? "light" : "dark"} />
+      </NavigationThemeProvider>
+    </PaperProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <RootNavigator />
     </ThemeProvider>
   );
 }

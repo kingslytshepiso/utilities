@@ -1,21 +1,32 @@
 /**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
+ * Theme Color Hooks
+ * Re-export theme hooks from the theme context
  */
 
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+export {
+  usePaperTheme,
+  useTheme,
+  useColorScheme,
+  useIsDarkMode,
+} from "@/contexts/theme-context";
+
+/**
+ * Legacy hook for backward compatibility with custom colors
+ * For new code, use usePaperTheme() to access the full MD3 color palette
+ */
+import { Colors } from "@/constants/theme";
+import { useColorScheme as useColorSchemeInternal } from "@/contexts/theme-context";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  const theme = useColorScheme() ?? 'light';
-  const colorFromProps = props[theme];
+  const colorScheme = useColorSchemeInternal();
+  const colorFromProps = props[colorScheme];
 
   if (colorFromProps) {
     return colorFromProps;
   } else {
-    return Colors[theme][colorName];
+    return Colors[colorScheme][colorName];
   }
 }
