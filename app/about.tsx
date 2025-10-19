@@ -10,7 +10,7 @@ import { ThemedText } from "@/components/themed-text";
 import { Collapsible } from "@/components/ui/collapsible";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, platform, shadow } from "@/utils";
+import { gutters, layout, platform, rounded, shadow } from "@/utils";
 import { useResponsiveValue } from "@/utils/responsive";
 
 export default function AboutScreen() {
@@ -43,7 +43,14 @@ export default function AboutScreen() {
       showsVerticalScrollIndicator={false}
     >
       {/* Header */}
-      <View style={[gutters.marginBottom.xxl, styles.headerSection]}>
+      <View
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          gutters.marginBottom.xxl,
+          styles.headerSection,
+        ]}
+      >
         <ThemedText type="title" style={styles.pageTitle}>
           About This Template
         </ThemedText>
@@ -55,7 +62,14 @@ export default function AboutScreen() {
 
       {/* Platform Info */}
       <Card
-        style={[gutters.marginBottom.xl, shadow.sm, styles.card]}
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          rounded.lg,
+          gutters.marginBottom.xl,
+          shadow.sm,
+          styles.card,
+        ]}
         elevation={1}
       >
         <Card.Content style={styles.cardContent}>
@@ -112,7 +126,14 @@ export default function AboutScreen() {
 
       {/* Features Overview */}
       <Card
-        style={[gutters.marginBottom.xl, shadow.sm, styles.card]}
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          rounded.lg,
+          gutters.marginBottom.xl,
+          shadow.sm,
+          styles.card,
+        ]}
         elevation={1}
       >
         <Card.Content style={styles.cardContent}>
@@ -179,7 +200,14 @@ export default function AboutScreen() {
 
       {/* Getting Started */}
       <Card
-        style={[gutters.marginBottom.xl, shadow.sm, styles.card]}
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          rounded.lg,
+          gutters.marginBottom.xl,
+          shadow.sm,
+          styles.card,
+        ]}
         elevation={1}
       >
         <Card.Content style={styles.cardContent}>
@@ -232,7 +260,16 @@ export default function AboutScreen() {
       </Card>
 
       {/* Resources */}
-      <Card style={[shadow.sm, styles.card]} elevation={1}>
+      <Card
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          rounded.lg,
+          shadow.sm,
+          styles.card,
+        ]}
+        elevation={1}
+      >
         <Card.Content style={styles.cardContent}>
           <ThemedText
             type="subtitle"
@@ -244,7 +281,7 @@ export default function AboutScreen() {
           <Button
             mode="outlined"
             onPress={() => Linking.openURL("https://docs.expo.dev")}
-            style={[gutters.marginBottom.md, styles.resourceButton]}
+            style={[layout.fullWidth, rounded.md, gutters.marginBottom.md]}
             icon="book-open-outline"
             contentStyle={styles.buttonContent}
           >
@@ -254,7 +291,7 @@ export default function AboutScreen() {
           <Button
             mode="outlined"
             onPress={() => Linking.openURL("https://reactnativepaper.com")}
-            style={[gutters.marginBottom.md, styles.resourceButton]}
+            style={[layout.fullWidth, rounded.md, gutters.marginBottom.md]}
             icon="palette-outline"
             contentStyle={styles.buttonContent}
           >
@@ -265,7 +302,7 @@ export default function AboutScreen() {
             mode="outlined"
             onPress={() => Linking.openURL("https://reactnative.dev")}
             icon="react"
-            style={styles.resourceButton}
+            style={[layout.fullWidth, rounded.md]}
             contentStyle={styles.buttonContent}
           >
             React Native Docs
@@ -283,8 +320,6 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     maxWidth: 800,
-    alignSelf: "center",
-    width: "100%",
     paddingHorizontal: Platform.select({ web: 0, default: 16 }),
     paddingVertical: Platform.select({ web: 24, default: 16 }),
   },
@@ -301,9 +336,6 @@ const styles = StyleSheet.create({
   },
   card: {
     maxWidth: 800,
-    alignSelf: "center",
-    width: "100%",
-    borderRadius: 16,
   },
   cardContent: {
     paddingVertical: Platform.select({ web: 28, default: 20 }),
@@ -324,10 +356,6 @@ const styles = StyleSheet.create({
   featureList: {
     lineHeight: 26,
     fontSize: 14,
-  },
-  resourceButton: {
-    width: "100%",
-    borderRadius: 12,
   },
   buttonContent: {
     paddingVertical: 10,

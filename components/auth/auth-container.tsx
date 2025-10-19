@@ -10,7 +10,7 @@ import {
   useAuthSpacing,
 } from "@/hooks/use-responsive-auth";
 import { usePaperTheme } from "@/hooks/use-theme-color";
-import { rounded, shadow } from "@/utils";
+import { gutters, rounded, shadow } from "@/utils";
 import React from "react";
 import {
   ImageBackground,
@@ -63,6 +63,8 @@ export function AuthContainer({
     const content = (
       <View
         style={[
+          layout.fullWidth,
+          layout.selfCenter,
           styles.formContainer,
           formWidthStyle,
           {
@@ -73,13 +75,16 @@ export function AuthContainer({
       >
         {/* Header */}
         {(headerLogo || title || subtitle) && (
-          <View style={[styles.header, { marginBottom: spacing.gap }]}>
-            {headerLogo && <View style={styles.logo}>{headerLogo}</View>}
+          <View style={[layout.itemsCenter, { marginBottom: spacing.gap }]}>
+            {headerLogo && (
+              <View style={gutters.marginBottom.lg}>{headerLogo}</View>
+            )}
 
             {title && (
               <ThemedText
                 type="title"
                 style={[
+                  gutters.marginBottom.sm,
                   styles.title,
                   { fontSize: layout === "compact" ? 24 : 32 },
                 ]}
@@ -111,9 +116,12 @@ export function AuthContainer({
       return (
         <Card
           style={[
-            styles.card,
-            shadow.lg,
+            layout.fullWidth,
+            layout.selfCenter,
+            gutters.marginHorizontal.md,
             rounded.lg,
+            shadow.lg,
+            styles.card,
             { backgroundColor: theme.colors.surface },
           ]}
         >
@@ -128,12 +136,12 @@ export function AuthContainer({
   // Split layout (desktop with side image)
   if (layout === "split" && backgroundImage) {
     return (
-      <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
-        <View style={styles.splitContainer}>
+      <SafeAreaView style={layout.flex1} edges={["top", "bottom"]}>
+        <View style={[layout.flex1, layout.flexRow]}>
           {/* Image Side */}
           <ImageBackground
             source={backgroundImage}
-            style={styles.splitImage}
+            style={[layout.flex1, layout.relative]}
             resizeMode="cover"
           >
             <View
@@ -147,12 +155,14 @@ export function AuthContainer({
           {/* Form Side */}
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.splitForm}
+            style={[layout.flex1, styles.splitForm]}
           >
             <ScrollView
               contentContainerStyle={[
+                layout.center,
+                gutters.paddingHorizontal.xxl,
+                gutters.paddingVertical.xxl,
                 styles.scrollContent,
-                styles.scrollContentSplit,
               ]}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -167,16 +177,19 @@ export function AuthContainer({
 
   // Standard layout (mobile/tablet)
   return (
-    <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
+    <SafeAreaView style={layout.flex1} edges={["top", "bottom"]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.flex}
+        style={layout.flex1}
       >
         <ScrollView
           contentContainerStyle={[
+            layout.center,
+            gutters.paddingHorizontal.md,
+            gutters.paddingVertical.lg,
             styles.scrollContent,
+            layout === "wide" && gutters.paddingHorizontal.xl,
             layout === "wide" && styles.scrollContentWide,
-            layout === "split" && styles.scrollContentSplit,
           ]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
@@ -189,42 +202,18 @@ export function AuthContainer({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  flex: {
-    flex: 1,
-  },
   scrollContent: {
     flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 24,
-    paddingHorizontal: 16,
   },
   scrollContentWide: {
-    paddingHorizontal: 32,
     paddingVertical: 40,
-  },
-  scrollContentSplit: {
-    paddingHorizontal: 48,
-    paddingVertical: 48,
   },
   formContainer: {
     maxWidth: 600,
-    width: "100%",
-    alignSelf: "center", // Center on all platforms
-  },
-  header: {
-    alignItems: "center",
-  },
-  logo: {
-    marginBottom: 24,
   },
   title: {
     fontWeight: "700",
     textAlign: "center",
-    marginBottom: 8,
   },
   subtitle: {
     textAlign: "center",
@@ -232,9 +221,6 @@ const styles = StyleSheet.create({
   },
   card: {
     maxWidth: 600,
-    width: "100%",
-    alignSelf: "center",
-    marginHorizontal: 16,
     ...Platform.select({
       web: {
         boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -244,20 +230,11 @@ const styles = StyleSheet.create({
   cardContent: {
     padding: 0,
   },
-  splitContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  splitImage: {
-    flex: 1,
-    position: "relative",
-  },
   imageOverlay: {
     ...StyleSheet.absoluteFillObject,
     opacity: 0.6,
   },
   splitForm: {
-    flex: 1,
     minWidth: 400,
     maxWidth: 700,
   },

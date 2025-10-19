@@ -21,7 +21,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { UserMenuModal } from "@/components/user-menu-modal";
 import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme, useTheme } from "@/hooks/use-theme-color";
-import { gutters, layout, supportsHaptics } from "@/utils";
+import { gutters, layout, rounded, supportsHaptics } from "@/utils";
 
 interface AppHeaderProps {
   /**
@@ -94,9 +94,10 @@ export function AppHeader({
   return (
     <View
       style={[
-        styles.container,
+        layout.rowBetween,
         gutters.paddingHorizontal.md,
         gutters.paddingVertical.sm,
+        styles.container,
         {
           backgroundColor: theme.colors.surface,
           borderBottomColor: theme.colors.outlineVariant,
@@ -112,6 +113,8 @@ export function AppHeader({
         >
           <View
             style={[
+              layout.center,
+              rounded.sm,
               styles.logoPlaceholder,
               { backgroundColor: theme.colors.primary },
             ]}
@@ -131,7 +134,11 @@ export function AppHeader({
         {Platform.OS === "web" && (
           <TouchableOpacity
             onPress={() => router.push("/about")}
-            style={styles.navLink}
+            style={[
+              gutters.paddingHorizontal.md,
+              gutters.paddingVertical.sm,
+              rounded.sm,
+            ]}
             activeOpacity={0.7}
           >
             <ThemedText style={{ color: theme.colors.onSurface, fontSize: 14 }}>
@@ -145,7 +152,7 @@ export function AppHeader({
       <View style={[layout.flexRow, layout.itemsCenter, gutters.gap.xs]}>
         <TouchableOpacity
           onPress={handleThemeToggle}
-          style={styles.iconButton}
+          style={[gutters.padding.sm, rounded.sm]}
           accessibilityLabel={`Switch to ${isDark ? "light" : "dark"} mode`}
         >
           <IconSymbol
@@ -158,7 +165,7 @@ export function AppHeader({
         {showGithub && (
           <TouchableOpacity
             onPress={handleGithubPress}
-            style={styles.iconButton}
+            style={[gutters.padding.sm, rounded.sm]}
             accessibilityLabel="Open GitHub repository"
           >
             <FontAwesome
@@ -193,12 +200,13 @@ export function AppHeader({
                           return !prev;
                         });
                       }}
-                      style={styles.userButton}
+                      style={gutters.padding.xs}
                       accessibilityLabel="User menu"
                       activeOpacity={0.7}
                     >
                       <View
                         style={[
+                          layout.center,
                           styles.avatar,
                           { backgroundColor: theme.colors.primary },
                         ]}
@@ -250,12 +258,13 @@ export function AppHeader({
                             return !prev;
                           });
                         }}
-                        style={styles.userButton}
+                        style={gutters.padding.xs}
                         accessibilityLabel="User menu"
                         activeOpacity={0.7}
                       >
                         <View
                           style={[
+                            layout.center,
                             styles.avatar,
                             { backgroundColor: theme.colors.primary },
                           ]}
@@ -294,7 +303,11 @@ export function AppHeader({
               <>
                 <TouchableOpacity
                   onPress={handleLoginPress}
-                  style={styles.authButton}
+                  style={[
+                    gutters.paddingHorizontal.md,
+                    gutters.paddingVertical.sm,
+                    rounded.sm,
+                  ]}
                   accessibilityLabel="Login"
                 >
                   <ThemedText
@@ -306,8 +319,9 @@ export function AppHeader({
                 <TouchableOpacity
                   onPress={handleSignUpPress}
                   style={[
-                    styles.authButton,
-                    styles.signUpButton,
+                    gutters.paddingHorizontal.md,
+                    gutters.paddingVertical.sm,
+                    rounded.sm,
                     { backgroundColor: theme.colors.primary },
                   ]}
                   accessibilityLabel="Sign Up"
@@ -329,9 +343,6 @@ export function AppHeader({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     borderBottomWidth: 1,
     ...Platform.select({
       web: {
@@ -344,41 +355,15 @@ const styles = StyleSheet.create({
   logoPlaceholder: {
     width: 36,
     height: 36,
-    borderRadius: 8,
-    alignItems: "center",
-    justifyContent: "center",
   },
   logoText: {
     fontSize: 20,
     fontWeight: "bold",
   },
-  navLink: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  iconButton: {
-    padding: 8,
-    borderRadius: 8,
-  },
-  authButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  signUpButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  userButton: {
-    padding: 4,
-  },
   avatar: {
     width: 32,
     height: 32,
     borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
   },
   avatarText: {
     fontSize: 16,

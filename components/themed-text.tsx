@@ -16,10 +16,12 @@ export function ThemedText({
   ...rest
 }: ThemedTextProps) {
   const paperTheme = usePaperTheme();
+  const themedColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "text"
+  );
   const color =
-    lightColor || darkColor
-      ? useThemeColor({ light: lightColor, dark: darkColor }, "text")
-      : paperTheme.colors.onSurface;
+    lightColor || darkColor ? themedColor : paperTheme.colors.onSurface;
 
   return (
     <Text

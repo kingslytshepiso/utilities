@@ -56,6 +56,8 @@ export default function LandingScreen() {
       <View style={[layout.center, styles.heroSection]}>
         <View
           style={[
+            layout.center,
+            shadow.md,
             styles.heroIcon,
             { backgroundColor: theme.colors.primaryContainer },
           ]}
@@ -90,7 +92,7 @@ export default function LandingScreen() {
           mode="contained"
           onPress={handleGetStarted}
           icon={user ? "information-outline" : "rocket-launch"}
-          style={[gutters.marginBottom.sm, styles.primaryButton]}
+          style={[gutters.marginBottom.sm, rounded.md, styles.primaryButton]}
           contentStyle={styles.buttonContent}
         >
           {user ? "Learn More" : "Get Started"}
@@ -116,7 +118,14 @@ export default function LandingScreen() {
           What&apos;s Included
         </ThemedText>
 
-        <View style={styles.featuresGrid}>
+        <View
+          style={[
+            layout.flexRow,
+            layout.flexWrap,
+            layout.justifyCenter,
+            styles.featuresGrid,
+          ]}
+        >
           <FeatureCard
             icon="paintbrush.fill"
             title="Theming"
@@ -141,7 +150,15 @@ export default function LandingScreen() {
       </View>
 
       {/* Quick Actions */}
-      <Card style={[rounded.md, shadow.sm, styles.quickStartCard]}>
+      <Card
+        style={[
+          layout.selfCenter,
+          layout.fullWidth,
+          rounded.lg,
+          shadow.sm,
+          styles.quickStartCard,
+        ]}
+      >
         <Card.Content style={styles.cardContentPadding}>
           <ThemedText
             type="subtitle"
@@ -206,10 +223,12 @@ function FeatureCard({
   const theme = usePaperTheme();
 
   return (
-    <Card style={[styles.featureCard, shadow.sm]} elevation={1}>
+    <Card style={[rounded.lg, shadow.sm, styles.featureCard]} elevation={1}>
       <Card.Content style={[layout.center, styles.featureCardContent]}>
         <View
           style={[
+            layout.center,
+            gutters.marginBottom.xs,
             styles.iconContainer,
             { backgroundColor: theme.colors.primaryContainer },
           ]}
@@ -243,27 +262,10 @@ const styles = StyleSheet.create({
     paddingVertical: Platform.select({ web: 40, default: 32 }),
     paddingHorizontal: Platform.select({ web: 16, default: 16 }),
   },
-  featuresSection: {
-    paddingHorizontal: Platform.select({ web: 0, default: 0 }),
-  },
   heroIcon: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    ...Platform.select({
-      web: {
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-      },
-      default: {
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 12,
-        elevation: 4,
-      },
-    }),
   },
   heroTitle: {
     fontSize: Platform.select({ web: 36, default: 28 }),
@@ -278,7 +280,6 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     minWidth: 200,
-    borderRadius: 12,
   },
   buttonContent: {
     paddingVertical: 10,
@@ -289,17 +290,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   featuresGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
     gap: Platform.select({ web: 20, default: 16 }),
-    justifyContent: "center",
     paddingHorizontal: Platform.select({ web: 0, default: 8 }),
   },
   featureCard: {
     flex: 1,
     minWidth: Platform.select({ web: 180, default: 150 }),
     maxWidth: 240,
-    borderRadius: 16,
     overflow: "hidden",
   },
   featureCardContent: {
@@ -311,9 +308,6 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 4,
   },
   featureTitle: {
     textAlign: "center",
@@ -327,9 +321,6 @@ const styles = StyleSheet.create({
   },
   quickStartCard: {
     maxWidth: 700,
-    alignSelf: "center",
-    width: "100%",
-    borderRadius: 16,
   },
   cardContentPadding: {
     paddingVertical: Platform.select({ web: 28, default: 20 }),

@@ -14,10 +14,12 @@ export function ThemedView({
   ...otherProps
 }: ThemedViewProps) {
   const paperTheme = usePaperTheme();
+  const themedBackground = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background"
+  );
   const backgroundColor =
-    lightColor || darkColor
-      ? useThemeColor({ light: lightColor, dark: darkColor }, "background")
-      : paperTheme.colors.background;
+    lightColor || darkColor ? themedBackground : paperTheme.colors.background;
 
   return <View style={[{ backgroundColor }, style]} {...otherProps} />;
 }
