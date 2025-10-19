@@ -7,127 +7,127 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 
-import { AppHeader } from "@/components/app-header";
-import { GradientBackground } from "@/components/gradient-background";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme } from "@/hooks/use-theme-color";
 import { gutters, layout, rounded, shadow } from "@/utils";
 
 export default function LandingScreen() {
   const theme = usePaperTheme();
+  const { user } = useAuth();
+
+  const handleGetStarted = () => {
+    if (user) {
+      router.push("/about");
+    } else {
+      router.push("/auth/signup");
+    }
+  };
 
   return (
-    <GradientBackground>
-      <AppHeader projectName="Starter Template" showGithub />
+    <ScrollView contentContainerStyle={[gutters.padding.lg]}>
+      {/* Hero Section */}
+      <ThemedView style={[layout.center, gutters.paddingVertical.xxxl]}>
+        <View
+          style={[
+            styles.heroIcon,
+            { backgroundColor: theme.colors.primaryContainer },
+          ]}
+        >
+          <IconSymbol name="sparkles" size={64} color={theme.colors.primary} />
+        </View>
 
-      <ScrollView contentContainerStyle={[gutters.padding.lg]}>
-        {/* Hero Section */}
-        <ThemedView style={[layout.center, gutters.paddingVertical.xxxl]}>
-          <View
-            style={[
-              styles.heroIcon,
-              { backgroundColor: theme.colors.primaryContainer },
-            ]}
-          >
-            <IconSymbol
-              name="sparkles"
-              size={64}
-              color={theme.colors.primary}
-            />
-          </View>
+        <ThemedText
+          type="title"
+          style={[gutters.marginTop.xl, { textAlign: "center" }]}
+        >
+          {user ? `Welcome back!` : "Your App Starts Here"}
+        </ThemedText>
 
-          <ThemedText
-            type="title"
-            style={[gutters.marginTop.xl, { textAlign: "center" }]}
-          >
-            Your App Starts Here
-          </ThemedText>
+        <ThemedText
+          style={[
+            gutters.marginTop.md,
+            gutters.marginBottom.xl,
+            { textAlign: "center", opacity: 0.8 },
+          ]}
+        >
+          A cross-platform starter template ready for your next project. Built
+          with Expo, React Native Paper, and modern best practices.
+        </ThemedText>
 
-          <ThemedText
-            style={[
-              gutters.marginTop.md,
-              gutters.marginBottom.xl,
-              { textAlign: "center", opacity: 0.8 },
-            ]}
-          >
-            A cross-platform starter template ready for your next project. Built
-            with Expo, React Native Paper, and modern best practices.
-          </ThemedText>
+        <Button
+          mode="contained"
+          onPress={handleGetStarted}
+          icon={user ? "information-outline" : "rocket-launch"}
+          style={[gutters.marginBottom.sm]}
+        >
+          {user ? "Learn More" : "Get Started"}
+        </Button>
 
-          <Button
-            mode="contained"
-            onPress={() => router.push("/about")}
-            icon="information-outline"
-            style={[gutters.marginBottom.sm]}
-          >
-            Learn More
-          </Button>
+        <Button mode="text" onPress={() => router.push("/modal")}>
+          View Example Modal
+        </Button>
+      </ThemedView>
 
-          <Button mode="text" onPress={() => router.push("/modal")}>
-            View Example Modal
-          </Button>
-        </ThemedView>
+      <Divider style={[gutters.marginVertical.lg]} />
 
-        <Divider style={[gutters.marginVertical.lg]} />
+      {/* Features Grid */}
+      <ThemedView style={[gutters.marginBottom.lg]}>
+        <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
+          What&apos;s Included
+        </ThemedText>
 
-        {/* Features Grid */}
-        <ThemedView style={[gutters.marginBottom.lg]}>
+        <View style={styles.featuresGrid}>
+          <FeatureCard
+            icon="paintbrush.fill"
+            title="Theming"
+            description="Material Design 3 with light/dark modes"
+          />
+          <FeatureCard
+            icon="square.grid.2x2"
+            title="Utilities"
+            description="Pre-built styling and layout helpers"
+          />
+          <FeatureCard
+            icon="display"
+            title="Responsive"
+            description="Adapts to all screen sizes"
+          />
+          <FeatureCard
+            icon="checkmark.shield.fill"
+            title="Type Safe"
+            description="Full TypeScript support"
+          />
+        </View>
+      </ThemedView>
+
+      {/* Quick Actions */}
+      <Card style={[rounded.md, shadow.sm]}>
+        <Card.Content>
           <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
-            What&apos;s Included
+            Quick Start
           </ThemedText>
 
-          <View style={styles.featuresGrid}>
-            <FeatureCard
-              icon="paintbrush.fill"
-              title="Theming"
-              description="Material Design 3 with light/dark modes"
-            />
-            <FeatureCard
-              icon="square.grid.2x2"
-              title="Utilities"
-              description="Pre-built styling and layout helpers"
-            />
-            <FeatureCard
-              icon="display"
-              title="Responsive"
-              description="Adapts to all screen sizes"
-            />
-            <FeatureCard
-              icon="checkmark.shield.fill"
-              title="Type Safe"
-              description="Full TypeScript support"
-            />
-          </View>
-        </ThemedView>
+          <ThemedText style={[gutters.marginBottom.sm]}>
+            1. Customize your theme in{" "}
+            <ThemedText type="defaultSemiBold">constants/theme.ts</ThemedText>
+          </ThemedText>
 
-        {/* Quick Actions */}
-        <Card style={[rounded.md, shadow.sm]}>
-          <Card.Content>
-            <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
-              Quick Start
-            </ThemedText>
+          <ThemedText style={[gutters.marginBottom.sm]}>
+            2. Update app name in{" "}
+            <ThemedText type="defaultSemiBold">app.json</ThemedText>
+          </ThemedText>
 
-            <ThemedText style={[gutters.marginBottom.sm]}>
-              1. Customize your theme in{" "}
-              <ThemedText type="defaultSemiBold">constants/theme.ts</ThemedText>
-            </ThemedText>
+          <ThemedText style={[gutters.marginBottom.sm]}>
+            3. Replace this placeholder with your content
+          </ThemedText>
 
-            <ThemedText style={[gutters.marginBottom.sm]}>
-              2. Update app name in{" "}
-              <ThemedText type="defaultSemiBold">app.json</ThemedText>
-            </ThemedText>
-
-            <ThemedText style={[gutters.marginBottom.sm]}>
-              3. Replace this placeholder with your content
-            </ThemedText>
-
-            <ThemedText>4. Start building amazing features!</ThemedText>
-          </Card.Content>
-        </Card>
-      </ScrollView>
-    </GradientBackground>
+          <ThemedText>4. Start building amazing features!</ThemedText>
+        </Card.Content>
+      </Card>
+    </ScrollView>
   );
 }
 

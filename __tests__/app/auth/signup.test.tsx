@@ -5,10 +5,9 @@
 
 import SignUpScreen from "@/app/auth/signup";
 import { useAuth } from "@/contexts/auth-context";
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { router } from "expo-router";
 import React from "react";
-import { PaperProvider } from "react-native-paper";
+import { fireEvent, render, waitFor } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");
@@ -27,10 +26,6 @@ jest.mock("@/hooks/use-responsive-auth", () => ({
   useAuthLayout: () => "standard",
   useAuthFormWidth: () => 480,
 }));
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PaperProvider>{children}</PaperProvider>
-);
 
 describe("SignUpScreen", () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -59,9 +54,9 @@ describe("SignUpScreen", () => {
 
   describe("rendering", () => {
     it("should render signup form", () => {
-      const { getByText, getByTestId } = render(<SignUpScreen />, { wrapper });
+      const { getAllByText, getByTestId } = render(<SignUpScreen />);
 
-      expect(getByText("Create Account")).toBeTruthy();
+      expect(getAllByText("Create Account").length).toBeGreaterThan(0);
       expect(getByTestId("signup-name-input")).toBeTruthy();
       expect(getByTestId("signup-email-input")).toBeTruthy();
       expect(getByTestId("signup-password-input")).toBeTruthy();
@@ -70,7 +65,7 @@ describe("SignUpScreen", () => {
     });
 
     it("should render login link", () => {
-      const { getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByText } = render(<SignUpScreen />);
       expect(getByText("Already have an account?")).toBeTruthy();
       expect(getByText("Sign In")).toBeTruthy();
     });
@@ -78,18 +73,17 @@ describe("SignUpScreen", () => {
 
   describe("form validation", () => {
     it("should show error for empty name", async () => {
-      const { getByTestId, getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<SignUpScreen />);
 
       const submitButton = getByTestId("signup-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Name is required")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Name is required");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for empty email", async () => {
-      const { getByTestId, getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<SignUpScreen />);
 
       const nameInput = getByTestId("signup-name-input");
       fireEvent.changeText(nameInput, "Test User");
@@ -97,13 +91,12 @@ describe("SignUpScreen", () => {
       const submitButton = getByTestId("signup-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Email is required")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Email is required");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for invalid email format", async () => {
-      const { getByTestId, getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<SignUpScreen />);
 
       const nameInput = getByTestId("signup-name-input");
       fireEvent.changeText(nameInput, "Test User");
@@ -114,13 +107,12 @@ describe("SignUpScreen", () => {
       const submitButton = getByTestId("signup-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Invalid email format")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Invalid email format");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error when passwords do not match", async () => {
-      const { getByTestId, getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<SignUpScreen />);
 
       const nameInput = getByTestId("signup-name-input");
       fireEvent.changeText(nameInput, "Test User");
@@ -137,9 +129,8 @@ describe("SignUpScreen", () => {
       const submitButton = getByTestId("signup-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Passwords do not match")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Passwords do not match");
+      expect(errorMessage).toBeTruthy();
     });
   });
 
@@ -151,7 +142,7 @@ describe("SignUpScreen", () => {
         signUp,
       });
 
-      const { getByTestId } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId } = render(<SignUpScreen />);
 
       const nameInput = getByTestId("signup-name-input");
       fireEvent.changeText(nameInput, "Test User");
@@ -184,7 +175,7 @@ describe("SignUpScreen", () => {
         signUp,
       });
 
-      const { getByTestId } = render(<SignUpScreen />, { wrapper });
+      const { getByTestId } = render(<SignUpScreen />);
 
       const nameInput = getByTestId("signup-name-input");
       fireEvent.changeText(nameInput, "Test User");
@@ -209,7 +200,7 @@ describe("SignUpScreen", () => {
 
   describe("navigation", () => {
     it("should navigate back to login when sign in link is pressed", () => {
-      const { getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByText } = render(<SignUpScreen />);
 
       const signInButton = getByText("Sign In");
       fireEvent.press(signInButton);
@@ -225,7 +216,7 @@ describe("SignUpScreen", () => {
         error: "Email already exists",
       });
 
-      const { getByText } = render(<SignUpScreen />, { wrapper });
+      const { getByText } = render(<SignUpScreen />);
 
       expect(getByText("Email already exists")).toBeTruthy();
     });

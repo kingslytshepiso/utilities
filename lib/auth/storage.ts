@@ -7,7 +7,8 @@
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
-const STORAGE_KEY_PREFIX = "@auth:";
+// Note: SecureStore on Android only allows alphanumeric characters, ".", "-", and "_"
+const STORAGE_KEY_PREFIX = "auth-";
 
 /**
  * Storage interface matching what Supabase expects

@@ -49,16 +49,28 @@ export const useAuthLayout = (): AuthLayoutType => {
  */
 export const useAuthFormWidth = (): number | string => {
   const layout = useAuthLayout();
+  const [windowWidth, setWindowWidth] = useState(
+    Dimensions.get("window").width
+  );
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setWindowWidth(Dimensions.get("window").width);
+    };
+
+    const subscription = Dimensions.addEventListener("change", updateWidth);
+    return () => subscription?.remove();
+  }, []);
 
   switch (layout) {
     case "split":
-      return "50%";
-    case "wide":
-      return 600;
-    case "standard":
-      return 480;
-    case "compact":
       return "100%";
+    case "wide":
+      return Math.min(600, windowWidth - 64); // Account for scroll padding
+    case "standard":
+      return Math.min(480, windowWidth - 64);
+    case "compact":
+      return "100%"; // Let it use the full width of parent
     default:
       return "100%";
   }
@@ -105,10 +117,10 @@ export const useAuthSpacing = () => {
   const layout = useAuthLayout();
 
   const spacing = {
-    compact: { padding: 16, gap: 12, logoSize: 48 },
-    standard: { padding: 24, gap: 16, logoSize: 64 },
-    wide: { padding: 32, gap: 20, logoSize: 72 },
-    split: { padding: 40, gap: 24, logoSize: 80 },
+    compact: { padding: 20, gap: 16, logoSize: 48 },
+    standard: { padding: 28, gap: 20, logoSize: 64 },
+    wide: { padding: 36, gap: 24, logoSize: 72 },
+    split: { padding: 44, gap: 28, logoSize: 80 },
   };
 
   return spacing[layout];

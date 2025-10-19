@@ -1,18 +1,27 @@
 /**
  * Forgot Password Screen
  * Password reset request screen
+ * Uses React Hook Form + Yup for validation
  */
 
-import { AuthButton, AuthContainer, AuthInput } from "@/components/auth";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
+
+import { AuthButton, AuthContainer } from "@/components/auth";
+import { ControlledInput } from "@/components/forms";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme } from "@/hooks/use-theme-color";
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Snackbar } from "react-native-paper";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordFormData,
+} from "@/lib/validation";
 
 /**
  * Forgot Password Screen Component
@@ -20,40 +29,30 @@ import { ActivityIndicator, Snackbar } from "react-native-paper";
 export default function ForgotPasswordScreen() {
   const theme = usePaperTheme();
   const { resetPassword, isLoading, error, clearError } = useAuth();
-
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
-  /**
-   * Validate email
-   */
-  const validateEmail = (): boolean => {
-    if (!email.trim()) {
-      setEmailError("Email is required");
-      return false;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setEmailError("Invalid email format");
-      return false;
-    }
-
-    setEmailError("");
-    return true;
-  };
+  // Initialize React Hook Form with Yup validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm<ForgotPasswordFormData>({
+    resolver: yupResolver(forgotPasswordSchema),
+    defaultValues: {
+      email: "",
+    },
+    mode: "onBlur",
+  });
 
   /**
    * Handle password reset request
    */
-  const handleResetPassword = async () => {
-    if (!validateEmail()) return;
-
+  const onSubmit = async (data: ForgotPasswordFormData) => {
     try {
       setIsSubmitting(true);
 
-      await resetPassword({ email: email.trim() });
+      await resetPassword({ email: data.email });
 
       setSuccessMessage("Password reset email sent! Please check your inbox.");
 
@@ -105,23 +104,22 @@ export default function ForgotPasswordScreen() {
         }
       >
         {/* Email Input */}
-        <AuthInput
+        <ControlledInput
+          control={control}
+          name="email"
           label="Email"
-          value={email}
-          onChangeText={setEmail}
           placeholder="your.email@example.com"
           keyboardType="email-address"
           autoComplete="email"
-          error={emailError}
           leftIcon="email-outline"
           returnKeyType="go"
-          onSubmitEditing={handleResetPassword}
+          onSubmitEditing={handleSubmit(onSubmit)}
           testID="forgot-password-email-input"
         />
 
         {/* Reset Password Button */}
         <AuthButton
-          onPress={handleResetPassword}
+          onPress={handleSubmit(onSubmit)}
           loading={isSubmitting}
           disabled={isSubmitting}
           icon="email-send"
@@ -191,21 +189,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 16,
+    marginTop: 20,
+    gap: 4,
   },
   backText: {
     opacity: 0.7,
+    fontSize: 14,
   },
   infoContainer: {
     marginTop: 24,
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 12,
     backgroundColor: "rgba(0, 0, 0, 0.05)",
   },
   infoText: {
-    fontSize: 12,
+    fontSize: 13,
     opacity: 0.7,
     textAlign: "center",
-    lineHeight: 18,
+    lineHeight: 20,
   },
 });

@@ -22,7 +22,7 @@ describe("authStorage", () => {
 
       const result = await authStorage.getItem("test-key");
 
-      expect(SecureStore.getItemAsync).toHaveBeenCalledWith("@auth:test-key");
+      expect(SecureStore.getItemAsync).toHaveBeenCalledWith("auth-test-key");
       expect(result).toBe(mockValue);
     });
 
@@ -40,7 +40,7 @@ describe("authStorage", () => {
 
       const result = await authStorage.getItem("test-key");
 
-      expect(localStorageMock.getItem).toHaveBeenCalledWith("@auth:test-key");
+      expect(localStorageMock.getItem).toHaveBeenCalledWith("auth-test-key");
       expect(result).toBe(mockValue);
     });
 
@@ -62,7 +62,7 @@ describe("authStorage", () => {
       await authStorage.setItem("test-key", "test-value");
 
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-        "@auth:test-key",
+        "auth-test-key",
         "test-value"
       );
     });
@@ -80,7 +80,7 @@ describe("authStorage", () => {
       await authStorage.setItem("test-key", "test-value");
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        "@auth:test-key",
+        "auth-test-key",
         "test-value"
       );
     });
@@ -93,9 +93,7 @@ describe("authStorage", () => {
 
       await authStorage.removeItem("test-key");
 
-      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-        "@auth:test-key"
-      );
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth-test-key");
     });
 
     it("should use localStorage on web", async () => {
@@ -110,20 +108,18 @@ describe("authStorage", () => {
 
       await authStorage.removeItem("test-key");
 
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith(
-        "@auth:test-key"
-      );
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith("auth-test-key");
     });
   });
 
   describe("key prefixing", () => {
-    it("should prefix all keys with @auth:", async () => {
+    it("should prefix all keys with auth-", async () => {
       Platform.OS = "ios";
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue("value");
 
       await authStorage.getItem("my-key");
 
-      expect(SecureStore.getItemAsync).toHaveBeenCalledWith("@auth:my-key");
+      expect(SecureStore.getItemAsync).toHaveBeenCalledWith("auth-my-key");
     });
   });
 });

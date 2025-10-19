@@ -5,10 +5,9 @@
 
 import { AuthGuard } from "@/components/auth/auth-guard";
 import { useAuth } from "@/contexts/auth-context";
-import { render } from "@testing-library/react-native";
 import React from "react";
 import { Text } from "react-native";
-import { PaperProvider } from "react-native-paper";
+import { render } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");
@@ -17,10 +16,6 @@ jest.mock("expo-router", () => ({
     push: jest.fn(),
   },
 }));
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PaperProvider>{children}</PaperProvider>
-);
 
 describe("AuthGuard", () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -55,8 +50,7 @@ describe("AuthGuard", () => {
       const { getByText } = render(
         <AuthGuard>
           <Text>Protected Content</Text>
-        </AuthGuard>,
-        { wrapper }
+        </AuthGuard>
       );
 
       expect(getByText("Protected Content")).toBeTruthy();
@@ -86,8 +80,7 @@ describe("AuthGuard", () => {
       const { getByText } = render(
         <AuthGuard>
           <Text>Protected Content</Text>
-        </AuthGuard>,
-        { wrapper }
+        </AuthGuard>
       );
 
       expect(getByText("Authentication Required")).toBeTruthy();
@@ -116,8 +109,7 @@ describe("AuthGuard", () => {
       const { getByText } = render(
         <AuthGuard fallback={<Text>Custom Fallback</Text>}>
           <Text>Protected Content</Text>
-        </AuthGuard>,
-        { wrapper }
+        </AuthGuard>
       );
 
       expect(getByText("Custom Fallback")).toBeTruthy();
@@ -145,8 +137,7 @@ describe("AuthGuard", () => {
       const { getByText } = render(
         <AuthGuard>
           <Text>Protected Content</Text>
-        </AuthGuard>,
-        { wrapper }
+        </AuthGuard>
       );
 
       expect(getByText("Sign In")).toBeTruthy();
@@ -176,8 +167,7 @@ describe("AuthGuard", () => {
       const { queryByText } = render(
         <AuthGuard>
           <Text>Protected Content</Text>
-        </AuthGuard>,
-        { wrapper }
+        </AuthGuard>
       );
 
       expect(queryByText("Protected Content")).toBeNull();

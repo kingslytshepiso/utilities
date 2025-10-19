@@ -5,10 +5,10 @@
 
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { useAuth } from "@/contexts/auth-context";
-import { render, waitFor } from "@testing-library/react-native";
 import { router, useSegments } from "expo-router";
 import React from "react";
 import { Text } from "react-native";
+import { render, waitFor } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");

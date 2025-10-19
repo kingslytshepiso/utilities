@@ -10,7 +10,7 @@ import {
   useAuthSpacing,
 } from "@/hooks/use-responsive-auth";
 import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, rounded, shadow } from "@/utils";
+import { rounded, shadow } from "@/utils";
 import React from "react";
 import {
   ImageBackground,
@@ -53,16 +53,22 @@ export function AuthContainer({
 
   // Render content based on layout type
   const renderContent = () => {
+    const formWidthStyle =
+      typeof formWidth === "string"
+        ? { width: formWidth as any }
+        : formWidth
+        ? { width: formWidth }
+        : { width: "100%" };
+
     const content = (
       <View
         style={[
           styles.formContainer,
+          formWidthStyle,
           {
-            width: typeof formWidth === "number" ? formWidth : undefined,
             padding: spacing.padding,
             gap: spacing.gap,
           },
-          typeof formWidth === "string" && { width: formWidth as any },
         ]}
       >
         {/* Header */}
@@ -144,7 +150,10 @@ export function AuthContainer({
             style={styles.splitForm}
           >
             <ScrollView
-              contentContainerStyle={styles.scrollContent}
+              contentContainerStyle={[
+                styles.scrollContent,
+                styles.scrollContentSplit,
+              ]}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
@@ -166,7 +175,8 @@ export function AuthContainer({
         <ScrollView
           contentContainerStyle={[
             styles.scrollContent,
-            layout === "compact" && gutters.padding.md,
+            layout === "wide" && styles.scrollContentWide,
+            layout === "split" && styles.scrollContentSplit,
           ]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
@@ -189,10 +199,21 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: 24,
+    paddingHorizontal: 16,
+  },
+  scrollContentWide: {
+    paddingHorizontal: 32,
+    paddingVertical: 40,
+  },
+  scrollContentSplit: {
+    paddingHorizontal: 48,
+    paddingVertical: 48,
   },
   formContainer: {
     maxWidth: 600,
     width: "100%",
+    alignSelf: "center", // Center on all platforms
   },
   header: {
     alignItems: "center",
@@ -211,7 +232,14 @@ const styles = StyleSheet.create({
   },
   card: {
     maxWidth: 600,
-    width: "90%",
+    width: "100%",
+    alignSelf: "center",
+    marginHorizontal: 16,
+    ...Platform.select({
+      web: {
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      },
+    }),
   },
   cardContent: {
     padding: 0,
@@ -231,5 +259,6 @@ const styles = StyleSheet.create({
   splitForm: {
     flex: 1,
     minWidth: 400,
+    maxWidth: 700,
   },
 });

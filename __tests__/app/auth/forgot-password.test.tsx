@@ -5,10 +5,9 @@
 
 import ForgotPasswordScreen from "@/app/auth/forgot-password";
 import { useAuth } from "@/contexts/auth-context";
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { router } from "expo-router";
 import React from "react";
-import { PaperProvider } from "react-native-paper";
+import { fireEvent, render, waitFor } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");
@@ -25,10 +24,6 @@ jest.mock("@/hooks/use-responsive-auth", () => ({
   useAuthLayout: () => "standard",
   useAuthFormWidth: () => 480,
 }));
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PaperProvider>{children}</PaperProvider>
-);
 
 describe("ForgotPasswordScreen", () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -62,9 +57,7 @@ describe("ForgotPasswordScreen", () => {
 
   describe("rendering", () => {
     it("should render forgot password form", () => {
-      const { getByText, getByTestId } = render(<ForgotPasswordScreen />, {
-        wrapper,
-      });
+      const { getByText, getByTestId } = render(<ForgotPasswordScreen />);
 
       expect(getByText("Forgot Password")).toBeTruthy();
       expect(getByTestId("forgot-password-email-input")).toBeTruthy();
@@ -72,35 +65,30 @@ describe("ForgotPasswordScreen", () => {
     });
 
     it("should render back to login link", () => {
-      const { getByText } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByText } = render(<ForgotPasswordScreen />);
       expect(getByText("Remember your password?")).toBeTruthy();
       expect(getByText("Back to Sign In")).toBeTruthy();
     });
 
     it("should render info text", () => {
-      const { getByText } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByText } = render(<ForgotPasswordScreen />);
       expect(getByText(/You will receive an email/)).toBeTruthy();
     });
   });
 
   describe("form validation", () => {
     it("should show error for empty email", async () => {
-      const { getByTestId, getByText } = render(<ForgotPasswordScreen />, {
-        wrapper,
-      });
+      const { getByTestId, findByText } = render(<ForgotPasswordScreen />);
 
       const submitButton = getByTestId("forgot-password-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Email is required")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Email is required");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for invalid email format", async () => {
-      const { getByTestId, getByText } = render(<ForgotPasswordScreen />, {
-        wrapper,
-      });
+      const { getByTestId, findByText } = render(<ForgotPasswordScreen />);
 
       const emailInput = getByTestId("forgot-password-email-input");
       fireEvent.changeText(emailInput, "invalid-email");
@@ -108,9 +96,8 @@ describe("ForgotPasswordScreen", () => {
       const submitButton = getByTestId("forgot-password-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Invalid email format")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Invalid email format");
+      expect(errorMessage).toBeTruthy();
     });
   });
 
@@ -122,7 +109,7 @@ describe("ForgotPasswordScreen", () => {
         resetPassword,
       });
 
-      const { getByTestId } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByTestId } = render(<ForgotPasswordScreen />);
 
       const emailInput = getByTestId("forgot-password-email-input");
       fireEvent.changeText(emailInput, "test@example.com");
@@ -144,9 +131,7 @@ describe("ForgotPasswordScreen", () => {
         resetPassword,
       });
 
-      const { getByTestId, getByText } = render(<ForgotPasswordScreen />, {
-        wrapper,
-      });
+      const { getByTestId, getByText } = render(<ForgotPasswordScreen />);
 
       const emailInput = getByTestId("forgot-password-email-input");
       fireEvent.changeText(emailInput, "test@example.com");
@@ -166,7 +151,7 @@ describe("ForgotPasswordScreen", () => {
         resetPassword,
       });
 
-      const { getByTestId } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByTestId } = render(<ForgotPasswordScreen />);
 
       const emailInput = getByTestId("forgot-password-email-input");
       fireEvent.changeText(emailInput, "test@example.com");
@@ -189,7 +174,7 @@ describe("ForgotPasswordScreen", () => {
 
   describe("navigation", () => {
     it("should navigate back to login when back button is pressed", () => {
-      const { getByText } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByText } = render(<ForgotPasswordScreen />);
 
       const backButton = getByText("Back to Sign In");
       fireEvent.press(backButton);
@@ -205,7 +190,7 @@ describe("ForgotPasswordScreen", () => {
         error: "Email not found",
       });
 
-      const { getByText } = render(<ForgotPasswordScreen />, { wrapper });
+      const { getByText } = render(<ForgotPasswordScreen />);
 
       expect(getByText("Email not found")).toBeTruthy();
     });

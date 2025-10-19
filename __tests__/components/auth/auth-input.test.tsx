@@ -4,13 +4,8 @@
  */
 
 import { AuthInput } from "@/components/auth/auth-input";
-import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { PaperProvider } from "react-native-paper";
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PaperProvider>{children}</PaperProvider>
-);
+import { fireEvent, render } from "../../test-utils";
 
 describe("AuthInput", () => {
   const defaultProps = {
@@ -25,16 +20,14 @@ describe("AuthInput", () => {
 
   describe("rendering", () => {
     it("should render with label", () => {
-      const { getByText } = render(<AuthInput {...defaultProps} />, {
-        wrapper,
-      });
-      expect(getByText("Email")).toBeTruthy();
+      const { getAllByText } = render(<AuthInput {...defaultProps} />);
+      const emailLabels = getAllByText("Email");
+      expect(emailLabels.length).toBeGreaterThan(0);
     });
 
     it("should render with placeholder", () => {
       const { getByPlaceholderText } = render(
-        <AuthInput {...defaultProps} placeholder="Enter email" />,
-        { wrapper }
+        <AuthInput {...defaultProps} placeholder="Enter email" />
       );
       expect(getByPlaceholderText("Enter email")).toBeTruthy();
     });
@@ -45,16 +38,14 @@ describe("AuthInput", () => {
           {...defaultProps}
           leftIcon="email-outline"
           testID="email-input"
-        />,
-        { wrapper }
+        />
       );
       expect(getByTestId("email-input")).toBeTruthy();
     });
 
     it("should render error message when error prop is provided", () => {
       const { getByText } = render(
-        <AuthInput {...defaultProps} error="Email is required" />,
-        { wrapper }
+        <AuthInput {...defaultProps} error="Email is required" />
       );
       expect(getByText("Email is required")).toBeTruthy();
     });
@@ -68,8 +59,7 @@ describe("AuthInput", () => {
           label="Password"
           secureTextEntry
           testID="password-input"
-        />,
-        { wrapper }
+        />
       );
 
       const input = getByTestId("password-input");
@@ -83,8 +73,7 @@ describe("AuthInput", () => {
           label="Password"
           secureTextEntry
           testID="password-input"
-        />,
-        { wrapper }
+        />
       );
 
       // Find and press the eye icon
@@ -105,8 +94,7 @@ describe("AuthInput", () => {
           {...defaultProps}
           onChangeText={onChangeText}
           testID="input"
-        />,
-        { wrapper }
+        />
       );
 
       const input = getByTestId("input");
@@ -122,8 +110,7 @@ describe("AuthInput", () => {
           {...defaultProps}
           onSubmitEditing={onSubmitEditing}
           testID="input"
-        />,
-        { wrapper }
+        />
       );
 
       const input = getByTestId("input");
@@ -134,8 +121,7 @@ describe("AuthInput", () => {
 
     it("should not allow input when disabled", () => {
       const { getByTestId } = render(
-        <AuthInput {...defaultProps} disabled testID="input" />,
-        { wrapper }
+        <AuthInput {...defaultProps} disabled testID="input" />
       );
 
       const input = getByTestId("input");
@@ -150,8 +136,7 @@ describe("AuthInput", () => {
           {...defaultProps}
           keyboardType="email-address"
           testID="email-input"
-        />,
-        { wrapper }
+        />
       );
 
       const input = getByTestId("email-input");
@@ -160,8 +145,7 @@ describe("AuthInput", () => {
 
     it("should use correct return key type", () => {
       const { getByTestId } = render(
-        <AuthInput {...defaultProps} returnKeyType="next" testID="input" />,
-        { wrapper }
+        <AuthInput {...defaultProps} returnKeyType="next" testID="input" />
       );
 
       const input = getByTestId("input");
@@ -172,8 +156,7 @@ describe("AuthInput", () => {
   describe("autocomplete", () => {
     it("should set autocomplete for email", () => {
       const { getByTestId } = render(
-        <AuthInput {...defaultProps} autoComplete="email" testID="input" />,
-        { wrapper }
+        <AuthInput {...defaultProps} autoComplete="email" testID="input" />
       );
 
       const input = getByTestId("input");
@@ -182,8 +165,7 @@ describe("AuthInput", () => {
 
     it("should set autocomplete for password", () => {
       const { getByTestId } = render(
-        <AuthInput {...defaultProps} autoComplete="password" testID="input" />,
-        { wrapper }
+        <AuthInput {...defaultProps} autoComplete="password" testID="input" />
       );
 
       const input = getByTestId("input");

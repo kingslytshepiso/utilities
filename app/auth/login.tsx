@@ -1,14 +1,22 @@
 /**
  * Login Screen
  * Responsive login screen with email/password and social auth
+ * Uses React Hook Form + Yup for validation
  */
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { StyleSheet, View } from "react-native";
+import { ActivityIndicator, Snackbar } from "react-native-paper";
 
 import {
   AuthButton,
   AuthContainer,
-  AuthInput,
   SocialAuthButtons,
 } from "@/components/auth";
+import { ControlledInput } from "@/components/forms";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -16,11 +24,8 @@ import { authConfig } from "@/config/auth.config";
 import { useAuth } from "@/contexts/auth-context";
 import { useShouldShowSocialAuth } from "@/hooks/use-responsive-auth";
 import { usePaperTheme } from "@/hooks/use-theme-color";
+import { loginSchema, type LoginFormData } from "@/lib/validation";
 import type { OAuthProvider } from "@/types/auth";
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { ActivityIndicator, Snackbar } from "react-native-paper";
 
 /**
  * Login Screen Component
@@ -29,47 +34,30 @@ export default function LoginScreen() {
   const theme = usePaperTheme();
   const { signIn, signInWithOAuth, isLoading, error, clearError } = useAuth();
   const shouldShowSocialAuth = useShouldShowSocialAuth();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
-    {}
-  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * Validate form
-   */
-  const validateForm = (): boolean => {
-    const newErrors: { email?: string; password?: string } = {};
-
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!password) {
-      newErrors.password = "Password is required";
-    } else if (password.length < authConfig.security.minPasswordLength) {
-      newErrors.password = `Password must be at least ${authConfig.security.minPasswordLength} characters`;
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  // Initialize React Hook Form with Yup validation
+  const {
+    control,
+    handleSubmit,
+    formState: { errors: formErrors },
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onBlur",
+  });
 
   /**
    * Handle email/password login
    */
-  const handleLogin = async () => {
-    if (!validateForm()) return;
-
+  const onSubmit = async (data: LoginFormData) => {
     try {
       setIsSubmitting(true);
-      setErrors({});
 
-      await signIn({ email: email.trim(), password });
+      await signIn({ email: data.email, password: data.password });
 
       // Navigation will be handled by auth state change
       router.replace("/");
@@ -135,31 +123,29 @@ export default function LoginScreen() {
         }
       >
         {/* Email Input */}
-        <AuthInput
+        <ControlledInput
+          control={control}
+          name="email"
           label="Email"
-          value={email}
-          onChangeText={setEmail}
           placeholder="your.email@example.com"
           keyboardType="email-address"
           autoComplete="email"
-          error={errors.email}
           leftIcon="email-outline"
           returnKeyType="next"
           testID="login-email-input"
         />
 
         {/* Password Input */}
-        <AuthInput
+        <ControlledInput
+          control={control}
+          name="password"
           label="Password"
-          value={password}
-          onChangeText={setPassword}
           placeholder="Enter your password"
           secureTextEntry
           autoComplete="password"
-          error={errors.password}
           leftIcon="lock-outline"
           returnKeyType="go"
-          onSubmitEditing={handleLogin}
+          onSubmitEditing={handleSubmit(onSubmit)}
           testID="login-password-input"
         />
 
@@ -174,7 +160,7 @@ export default function LoginScreen() {
 
         {/* Login Button */}
         <AuthButton
-          onPress={handleLogin}
+          onPress={handleSubmit(onSubmit)}
           loading={isSubmitting}
           disabled={isSubmitting}
           icon="login"
@@ -237,9 +223,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 16,
+    marginTop: 20,
+    gap: 4,
   },
   signupText: {
     opacity: 0.7,
+    fontSize: 14,
   },
 });

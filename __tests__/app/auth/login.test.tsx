@@ -5,10 +5,9 @@
 
 import LoginScreen from "@/app/auth/login";
 import { useAuth } from "@/contexts/auth-context";
-import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import { router } from "expo-router";
 import React from "react";
-import { PaperProvider } from "react-native-paper";
+import { fireEvent, render, waitFor } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");
@@ -27,10 +26,6 @@ jest.mock("@/hooks/use-responsive-auth", () => ({
   useAuthLayout: () => "standard",
   useAuthFormWidth: () => 480,
 }));
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <PaperProvider>{children}</PaperProvider>
-);
 
 describe("LoginScreen", () => {
   const mockUseAuth = useAuth as jest.MockedFunction<typeof useAuth>;
@@ -59,7 +54,7 @@ describe("LoginScreen", () => {
 
   describe("rendering", () => {
     it("should render login form", () => {
-      const { getByText, getByTestId } = render(<LoginScreen />, { wrapper });
+      const { getByText, getByTestId } = render(<LoginScreen />);
 
       expect(getByText("Welcome Back")).toBeTruthy();
       expect(getByTestId("login-email-input")).toBeTruthy();
@@ -68,12 +63,12 @@ describe("LoginScreen", () => {
     });
 
     it("should render forgot password link", () => {
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
       expect(getByText("Forgot Password?")).toBeTruthy();
     });
 
     it("should render sign up link", () => {
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
       expect(getByText("Don't have an account?")).toBeTruthy();
       expect(getByText("Sign Up")).toBeTruthy();
     });
@@ -81,59 +76,59 @@ describe("LoginScreen", () => {
 
   describe("form validation", () => {
     it("should show error for empty email", async () => {
-      const { getByTestId, getByText } = render(<LoginScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<LoginScreen />);
 
       const submitButton = getByTestId("login-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Email is required")).toBeTruthy();
-      });
+      // Wait for validation message
+      const errorMessage = await findByText("Email is required");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for invalid email format", async () => {
-      const { getByTestId, getByText } = render(<LoginScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
-      fireEvent.changeText(emailInput, "invalid-email");
+      // Trigger blur to activate validation
+      fireEvent(emailInput, "changeText", "invalid-email");
+      fireEvent(emailInput, "blur");
 
       const submitButton = getByTestId("login-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Invalid email format")).toBeTruthy();
-      });
+      // Wait for validation message
+      const errorMessage = await findByText("Invalid email format");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for empty password", async () => {
-      const { getByTestId, getByText } = render(<LoginScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
-      fireEvent.changeText(emailInput, "test@example.com");
+      fireEvent(emailInput, "changeText", "test@example.com");
 
       const submitButton = getByTestId("login-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText("Password is required")).toBeTruthy();
-      });
+      const errorMessage = await findByText("Password is required");
+      expect(errorMessage).toBeTruthy();
     });
 
     it("should show error for short password", async () => {
-      const { getByTestId, getByText } = render(<LoginScreen />, { wrapper });
+      const { getByTestId, findByText } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
-      fireEvent.changeText(emailInput, "test@example.com");
+      fireEvent(emailInput, "changeText", "test@example.com");
 
       const passwordInput = getByTestId("login-password-input");
-      fireEvent.changeText(passwordInput, "12345");
+      fireEvent(passwordInput, "changeText", "12345");
 
       const submitButton = getByTestId("login-submit-button");
       fireEvent.press(submitButton);
 
-      await waitFor(() => {
-        expect(getByText(/Password must be at least/)).toBeTruthy();
-      });
+      const errorMessage = await findByText(/Password must be at least/);
+      expect(errorMessage).toBeTruthy();
     });
   });
 
@@ -145,7 +140,7 @@ describe("LoginScreen", () => {
         signIn,
       });
 
-      const { getByTestId } = render(<LoginScreen />, { wrapper });
+      const { getByTestId } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
       fireEvent.changeText(emailInput, "test@example.com");
@@ -171,7 +166,7 @@ describe("LoginScreen", () => {
         signIn,
       });
 
-      const { getByTestId } = render(<LoginScreen />, { wrapper });
+      const { getByTestId } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
       fireEvent.changeText(emailInput, "test@example.com");
@@ -190,11 +185,24 @@ describe("LoginScreen", () => {
     it("should trim email before submission", async () => {
       const signIn = jest.fn().mockResolvedValue(undefined);
       mockUseAuth.mockReturnValue({
-        ...mockUseAuth(),
+        isAuthenticated: false,
+        isLoading: false,
+        user: null,
+        session: null,
+        authState: "unauthenticated",
+        error: null,
+        signUp: jest.fn(),
         signIn,
+        signInWithOAuth: jest.fn(),
+        signOut: jest.fn(),
+        resetPassword: jest.fn(),
+        updatePassword: jest.fn(),
+        updateProfile: jest.fn(),
+        refreshSession: jest.fn(),
+        clearError: jest.fn(),
       });
 
-      const { getByTestId } = render(<LoginScreen />, { wrapper });
+      const { getByTestId } = render(<LoginScreen />);
 
       const emailInput = getByTestId("login-email-input");
       fireEvent.changeText(emailInput, "  test@example.com  ");
@@ -216,7 +224,7 @@ describe("LoginScreen", () => {
 
   describe("navigation", () => {
     it("should navigate to signup when sign up link is pressed", () => {
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
 
       const signUpButton = getByText("Sign Up");
       fireEvent.press(signUpButton);
@@ -225,7 +233,7 @@ describe("LoginScreen", () => {
     });
 
     it("should navigate to forgot password when link is pressed", () => {
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
 
       const forgotPasswordButton = getByText("Forgot Password?");
       fireEvent.press(forgotPasswordButton);
@@ -242,7 +250,7 @@ describe("LoginScreen", () => {
         signInWithOAuth,
       });
 
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
 
       // Find and press Google OAuth button
       const googleButton = getByText(/Continue with Google/);
@@ -261,7 +269,7 @@ describe("LoginScreen", () => {
         error: "Invalid credentials",
       });
 
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
 
       expect(getByText("Invalid credentials")).toBeTruthy();
     });
@@ -274,7 +282,7 @@ describe("LoginScreen", () => {
         clearError,
       });
 
-      const { getByText } = render(<LoginScreen />, { wrapper });
+      const { getByText } = render(<LoginScreen />);
 
       const dismissButton = getByText("Dismiss");
       fireEvent.press(dismissButton);

@@ -109,7 +109,7 @@ describe("useAuthFormWidth", () => {
     });
 
     const { result } = renderHook(() => useAuthFormWidth());
-    expect(result.current).toBe("50%");
+    expect(result.current).toBe("100%");
   });
 });
 
@@ -151,8 +151,8 @@ describe("useAuthSpacing", () => {
     const { result } = renderHook(() => useAuthSpacing());
 
     expect(result.current).toEqual({
-      padding: 16,
-      gap: 12,
+      padding: 20,
+      gap: 16,
       logoSize: 48,
     });
   });
@@ -168,8 +168,8 @@ describe("useAuthSpacing", () => {
     const { result } = renderHook(() => useAuthSpacing());
 
     expect(result.current).toEqual({
-      padding: 40,
-      gap: 24,
+      padding: 44,
+      gap: 28,
       logoSize: 80,
     });
   });

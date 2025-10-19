@@ -20,6 +20,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -68,7 +69,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [authState, setAuthState] = useState<AuthState>("loading");
   const [error, setError] = useState<string | null>(null);
 
-  const authProvider = getAuthProvider();
+  // Get auth provider singleton (memoized to avoid re-creating on every render)
+  const authProvider = useMemo(() => getAuthProvider(), []);
 
   /**
    * Initialize auth and restore session
@@ -127,7 +129,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       mounted = false;
       unsubscribe();
     };
-  }, []);
+  }, [authProvider]);
 
   /**
    * Sign up a new user
@@ -150,7 +152,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setAuthState("error");
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Sign in existing user
@@ -172,7 +174,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setAuthState("error");
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Sign in with OAuth provider
@@ -191,7 +193,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setAuthState("error");
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Sign out current user
@@ -206,7 +208,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(message);
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Request password reset
@@ -221,7 +223,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(message);
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Update user password
@@ -236,7 +238,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(message);
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Update user profile
@@ -252,7 +254,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(message);
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Refresh current session
@@ -269,7 +271,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(message);
       throw err;
     }
-  }, []);
+  }, [authProvider]);
 
   /**
    * Clear error state
