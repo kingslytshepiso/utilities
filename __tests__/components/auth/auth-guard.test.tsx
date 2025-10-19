@@ -5,9 +5,9 @@
 
 import { AuthGuard } from "@/components/auth/auth-guard";
 import { useAuth } from "@/contexts/auth-context";
+import { render } from "@/test-utils";
 import React from "react";
 import { Text } from "react-native";
-import { render } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");

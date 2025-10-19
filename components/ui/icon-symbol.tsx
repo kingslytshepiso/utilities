@@ -17,7 +17,12 @@ type IconSymbolName = keyof typeof MAPPING;
  * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
  */
 const MAPPING = {
+  // Navigation icons (outlined and filled variants)
+  house: "home-outlined",
   "house.fill": "home",
+  "info.circle": "info-outlined",
+  "info.circle.fill": "info",
+  // Other icons
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
@@ -30,7 +35,6 @@ const MAPPING = {
   display: "devices",
   "checkmark.shield.fill": "verified-user",
   "app.dashed": "apps",
-  "info.circle": "info",
   link: "link",
   "arrow.up.right.square": "open-in-new",
 } as IconMapping;

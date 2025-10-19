@@ -4,8 +4,8 @@
  */
 
 import { AuthInput } from "@/components/auth/auth-input";
+import { fireEvent, render } from "@/test-utils";
 import React from "react";
-import { fireEvent, render } from "../../test-utils";
 
 describe("AuthInput", () => {
   const defaultProps = {

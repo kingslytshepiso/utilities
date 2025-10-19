@@ -5,9 +5,9 @@
 
 import SignUpScreen from "@/app/auth/signup";
 import { useAuth } from "@/contexts/auth-context";
+import { fireEvent, render, waitFor } from "@/test-utils";
 import { router } from "expo-router";
 import React from "react";
-import { fireEvent, render, waitFor } from "../../test-utils";
 
 // Mock dependencies
 jest.mock("@/contexts/auth-context");

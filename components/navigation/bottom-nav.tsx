@@ -1,6 +1,7 @@
 /**
  * Bottom Navigation Component
- * Mobile navigation bar (safe areas handled by parent layout)
+ * Modern mobile navigation bar with smooth animations
+ * Safe areas handled by parent layout
  * Only shown on mobile platforms (Android/iOS)
  */
 
@@ -50,6 +51,13 @@ export function BottomNav({ items, hideOnWeb = true }: BottomNavProps) {
   const theme = usePaperTheme();
   const pathname = usePathname();
 
+  // Debug: Log pathname to console (remove in production)
+  React.useEffect(() => {
+    if (__DEV__) {
+      console.log("[BottomNav] Current pathname:", pathname);
+    }
+  }, [pathname]);
+
   // Hide on web if specified
   if (hideOnWeb && Platform.OS === "web") {
     return null;
@@ -61,7 +69,7 @@ export function BottomNav({ items, hideOnWeb = true }: BottomNavProps) {
     if (path === "/") {
       router.replace("/");
     } else {
-      router.push(path);
+      router.push(path as any);
     }
   };
 
@@ -71,45 +79,97 @@ export function BottomNav({ items, hideOnWeb = true }: BottomNavProps) {
         styles.container,
         {
           backgroundColor: theme.colors.surface,
-          borderTopColor: theme.colors.outlineVariant,
+          ...Platform.select({
+            ios: {
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: -2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 8,
+            },
+            android: {
+              elevation: 8,
+            },
+            web: {
+              boxShadow: "0 -2px 8px rgba(0, 0, 0, 0.1)",
+            },
+          }),
         },
       ]}
     >
       {items.map((item) => {
-        const isActive = pathname === item.path;
-        const iconName =
-          isActive && item.activeIcon ? item.activeIcon : item.icon;
+        // Normalize paths for comparison (remove trailing slashes)
+        const normalizedPathname = pathname?.replace(/\/$/, "") || "/";
+        const normalizedItemPath = item.path.replace(/\/$/, "") || "/";
+        const isActive = normalizedPathname === normalizedItemPath;
+
+        // Always use the filled icon (activeIcon) for visual consistency
+        // Active state is shown through background color, not icon style
+        const iconName = item.activeIcon || item.icon;
+
+        // Debug: Log active state (remove in production)
+        if (__DEV__) {
+          console.log(
+            `[BottomNav] Item: ${item.path}, Active: ${isActive}, Pathname: ${normalizedPathname}, Icon: ${iconName}`
+          );
+        }
 
         return (
           <TouchableOpacity
             key={item.path}
             onPress={() => handleNavPress(item.path)}
             style={styles.navItem}
-            activeOpacity={0.7}
+            activeOpacity={0.6}
             accessibilityLabel={item.label}
             accessibilityRole="button"
             accessibilityState={{ selected: isActive }}
           >
-            <IconSymbol
-              name={iconName as any}
-              size={24}
-              color={
-                isActive ? theme.colors.primary : theme.colors.onSurfaceVariant
-              }
-            />
-            <ThemedText
+            <View
               style={[
-                styles.label,
-                {
-                  color: isActive
-                    ? theme.colors.primary
-                    : theme.colors.onSurfaceVariant,
-                  fontWeight: isActive ? "600" : "400",
-                },
+                styles.navItemContent,
+                isActive && [
+                  {
+                    backgroundColor: theme.colors.primaryContainer,
+                  },
+                  Platform.select({
+                    ios: {
+                      shadowColor: theme.colors.primary,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.15,
+                      shadowRadius: 4,
+                    },
+                    android: {
+                      elevation: 2,
+                    },
+                  }),
+                ],
               ]}
             >
-              {item.label}
-            </ThemedText>
+              <View style={styles.iconWrapper}>
+                <IconSymbol
+                  name={iconName as any}
+                  size={26}
+                  color={
+                    isActive
+                      ? theme.colors.primary
+                      : theme.colors.onSurfaceVariant
+                  }
+                  weight="regular"
+                />
+              </View>
+              <ThemedText
+                style={[
+                  styles.label,
+                  {
+                    color: isActive
+                      ? theme.colors.primary
+                      : theme.colors.onSurfaceVariant,
+                    fontWeight: isActive ? "600" : "500",
+                  },
+                ]}
+              >
+                {item.label}
+              </ThemedText>
+            </View>
           </TouchableOpacity>
         );
       })}
@@ -120,10 +180,16 @@ export function BottomNav({ items, hideOnWeb = true }: BottomNavProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    borderTopWidth: 1,
-    paddingTop: 6,
-    paddingBottom: 6,
-    paddingHorizontal: 4,
+    paddingTop: Platform.select({ ios: 12, android: 10, default: 10 }),
+    paddingBottom: Platform.select({ ios: 8, android: 10, default: 10 }),
+    paddingHorizontal: 8,
+    borderTopLeftRadius: Platform.select({ ios: 24, android: 20, default: 20 }),
+    borderTopRightRadius: Platform.select({
+      ios: 24,
+      android: 20,
+      default: 20,
+    }),
+    gap: 4,
     ...Platform.select({
       web: {
         position: "fixed" as any,
@@ -138,11 +204,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 6,
-    gap: 2,
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+  },
+  navItemContent: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    minWidth: 64,
+    gap: 4,
+  },
+  iconWrapper: {
+    width: 26,
+    height: 26,
+    alignItems: "center",
+    justifyContent: "center",
   },
   label: {
-    fontSize: 11,
+    fontSize: 12,
     textAlign: "center",
+    letterSpacing: 0.2,
   },
 });

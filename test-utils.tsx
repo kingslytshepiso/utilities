@@ -35,3 +35,4 @@ export * from "@testing-library/react-native";
  * Export the custom render as default
  */
 export { renderWithProviders as render };
+

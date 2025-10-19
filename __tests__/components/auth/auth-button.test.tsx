@@ -4,8 +4,8 @@
  */
 
 import { AuthButton } from "@/components/auth/auth-button";
+import { fireEvent, render } from "@/test-utils";
 import React from "react";
-import { fireEvent, render } from "../../../__tests__/test-utils";
 
 describe("AuthButton", () => {
   const defaultProps = {
