@@ -1,6 +1,17 @@
+<div align="center">
+
 # Cross-Platform Starter Template
 
+[![GitHub](https://img.shields.io/badge/GitHub-kingslytshepiso%2Futilities-blue?logo=github)](https://github.com/kingslytshepiso/utilities)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Expo](https://img.shields.io/badge/Expo-SDK%2052-blue.svg?logo=expo)](https://expo.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
+
 A production-ready React Native starter template built with Expo, featuring a comprehensive theming system, utility styles, and responsive design helpers for building cross-platform applications.
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Documentation](#-project-structure) • [Contributing](#-contributing)
+
+</div>
 
 ## ✨ Features
 
@@ -27,7 +38,7 @@ A production-ready React Native starter template built with Expo, featuring a co
 
 ```bash
 # Clone the template
-git clone <your-repo-url>
+git clone https://github.com/kingslytshepiso/utilities.git
 cd utilities
 
 # Install dependencies

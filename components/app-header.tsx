@@ -47,7 +47,7 @@ interface AppHeaderProps {
 
 export function AppHeader({
   projectName = "Project Template",
-  githubUrl = "https://github.com/your-username/your-repo",
+  githubUrl = "https://github.com/kingslytshepiso/utilities",
   showGithub = true,
   showAuth = true,
 }: AppHeaderProps) {
