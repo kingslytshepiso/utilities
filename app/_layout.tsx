@@ -3,7 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider as NavigationThemeProvider,
 } from "@react-navigation/native";
-import { Stack, usePathname } from "expo-router";
+import { Slot, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View } from "react-native";
 import { PaperProvider } from "react-native-paper";
@@ -36,27 +36,15 @@ function RootNavigator() {
       <NavigationThemeProvider value={navigationTheme}>
         <ProtectedRoute>
           <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
-            <GradientBackground>
+            <GradientBackground style={styles.gradient}>
               {/* App Header - hide on auth and modal pages */}
               {shouldShowNavigation && (
                 <AppHeader projectName="Starter Template" showGithub showAuth />
               )}
 
-              {/* Main Content */}
+              {/* Main Content - Use Slot to render child routes */}
               <View style={styles.content}>
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="index" />
-                  <Stack.Screen name="about" />
-                  <Stack.Screen
-                    name="modal"
-                    options={{
-                      presentation: "modal",
-                      title: "Example Modal",
-                      headerShown: true,
-                    }}
-                  />
-                  <Stack.Screen name="auth" />
-                </Stack>
+                <Slot />
               </View>
 
               {/* Bottom Navigation - hide on auth and modal pages */}
@@ -89,6 +77,9 @@ function RootNavigator() {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  gradient: {
     flex: 1,
   },
   content: {

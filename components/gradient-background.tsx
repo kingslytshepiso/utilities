@@ -47,11 +47,11 @@ export function GradientBackground({
     ? gradientColors.dark[variant]
     : gradientColors.light[variant];
 
-  const gradientColorArray = colors || themeGradient;
+  const gradientColorArray = colors || (themeGradient as unknown as string[]);
 
   return (
     <LinearGradient
-      colors={gradientColorArray}
+      colors={gradientColorArray as any}
       start={start}
       end={end}
       style={[styles.container, style]}

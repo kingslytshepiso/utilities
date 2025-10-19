@@ -4,19 +4,34 @@
  */
 
 import { router } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme } from "@/hooks/use-theme-color";
 import { gutters, layout, rounded, shadow } from "@/utils";
+import { useResponsiveValue } from "@/utils/responsive";
 
 export default function LandingScreen() {
   const theme = usePaperTheme();
   const { user } = useAuth();
+
+  // Responsive padding
+  const containerPadding = useResponsiveValue({
+    sm: 16,
+    md: 24,
+    lg: 32,
+    default: 16,
+  });
+
+  const verticalSpacing = useResponsiveValue({
+    sm: 24,
+    md: 40,
+    lg: 60,
+    default: 24,
+  });
 
   const handleGetStarted = () => {
     if (user) {
@@ -27,9 +42,18 @@ export default function LandingScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={[gutters.padding.lg]}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.scrollContent,
+        {
+          paddingHorizontal: containerPadding,
+          paddingVertical: verticalSpacing,
+        },
+      ]}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Hero Section */}
-      <ThemedView style={[layout.center, gutters.paddingVertical.xxxl]}>
+      <View style={[layout.center, styles.heroSection]}>
         <View
           style={[
             styles.heroIcon,
@@ -41,7 +65,11 @@ export default function LandingScreen() {
 
         <ThemedText
           type="title"
-          style={[gutters.marginTop.xl, { textAlign: "center" }]}
+          style={[
+            gutters.marginTop.xl,
+            styles.heroTitle,
+            { textAlign: "center" },
+          ]}
         >
           {user ? `Welcome back!` : "Your App Starts Here"}
         </ThemedText>
@@ -50,6 +78,7 @@ export default function LandingScreen() {
           style={[
             gutters.marginTop.md,
             gutters.marginBottom.xl,
+            styles.heroSubtitle,
             { textAlign: "center", opacity: 0.8 },
           ]}
         >
@@ -61,21 +90,29 @@ export default function LandingScreen() {
           mode="contained"
           onPress={handleGetStarted}
           icon={user ? "information-outline" : "rocket-launch"}
-          style={[gutters.marginBottom.sm]}
+          style={[gutters.marginBottom.sm, styles.primaryButton]}
+          contentStyle={styles.buttonContent}
         >
           {user ? "Learn More" : "Get Started"}
         </Button>
 
-        <Button mode="text" onPress={() => router.push("/modal")}>
+        <Button
+          mode="text"
+          onPress={() => router.push("/modal")}
+          contentStyle={styles.buttonContent}
+        >
           View Example Modal
         </Button>
-      </ThemedView>
+      </View>
 
-      <Divider style={[gutters.marginVertical.lg]} />
+      <Divider style={[gutters.marginVertical.xl]} />
 
       {/* Features Grid */}
-      <ThemedView style={[gutters.marginBottom.lg]}>
-        <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
+      <View style={[gutters.marginBottom.xl, styles.featuresSection]}>
+        <ThemedText
+          type="subtitle"
+          style={[gutters.marginBottom.lg, styles.sectionTitle]}
+        >
           What&apos;s Included
         </ThemedText>
 
@@ -101,30 +138,56 @@ export default function LandingScreen() {
             description="Full TypeScript support"
           />
         </View>
-      </ThemedView>
+      </View>
 
       {/* Quick Actions */}
-      <Card style={[rounded.md, shadow.sm]}>
-        <Card.Content>
-          <ThemedText type="subtitle" style={[gutters.marginBottom.md]}>
+      <Card style={[rounded.md, shadow.sm, styles.quickStartCard]}>
+        <Card.Content style={styles.cardContentPadding}>
+          <ThemedText
+            type="subtitle"
+            style={[gutters.marginBottom.lg, styles.sectionTitle]}
+          >
             Quick Start
           </ThemedText>
 
-          <ThemedText style={[gutters.marginBottom.sm]}>
-            1. Customize your theme in{" "}
-            <ThemedText type="defaultSemiBold">constants/theme.ts</ThemedText>
+          <ThemedText style={[gutters.marginBottom.md, styles.stepText]}>
+            <ThemedText type="defaultSemiBold">1. Customize Theme</ThemedText>
+            {"\n"}
+            Edit{" "}
+            <ThemedText type="defaultSemiBold">
+              constants/theme.ts
+            </ThemedText>{" "}
+            to set your brand colors.
           </ThemedText>
 
-          <ThemedText style={[gutters.marginBottom.sm]}>
-            2. Update app name in{" "}
-            <ThemedText type="defaultSemiBold">app.json</ThemedText>
+          <ThemedText style={[gutters.marginBottom.md, styles.stepText]}>
+            <ThemedText type="defaultSemiBold">2. Update App Config</ThemedText>
+            {"\n"}
+            Modify <ThemedText type="defaultSemiBold">app.json</ThemedText> with
+            your app name and settings.
           </ThemedText>
 
-          <ThemedText style={[gutters.marginBottom.sm]}>
-            3. Replace this placeholder with your content
+          <ThemedText style={[gutters.marginBottom.md, styles.stepText]}>
+            <ThemedText type="defaultSemiBold">
+              3. Build Your Screens
+            </ThemedText>
+            {"\n"}
+            Replace{" "}
+            <ThemedText type="defaultSemiBold">
+              app/index.tsx
+            </ThemedText> and{" "}
+            <ThemedText type="defaultSemiBold">app/about.tsx</ThemedText> with
+            your content.
           </ThemedText>
 
-          <ThemedText>4. Start building amazing features!</ThemedText>
+          <ThemedText style={styles.stepText}>
+            <ThemedText type="defaultSemiBold">4. Use Utilities</ThemedText>
+            {"\n"}
+            Import from <ThemedText type="defaultSemiBold">
+              @/utils
+            </ThemedText>{" "}
+            for styling and responsive design.
+          </ThemedText>
         </Card.Content>
       </Card>
     </ScrollView>
@@ -143,21 +206,27 @@ function FeatureCard({
   const theme = usePaperTheme();
 
   return (
-    <Card style={[styles.featureCard, rounded.md, shadow.sm]}>
-      <Card.Content style={[layout.center, gutters.padding.md]}>
-        <IconSymbol name={icon as any} size={32} color={theme.colors.primary} />
+    <Card style={[styles.featureCard, shadow.sm]} elevation={1}>
+      <Card.Content style={[layout.center, styles.featureCardContent]}>
+        <View
+          style={[
+            styles.iconContainer,
+            { backgroundColor: theme.colors.primaryContainer },
+          ]}
+        >
+          <IconSymbol
+            name={icon as any}
+            size={28}
+            color={theme.colors.primary}
+          />
+        </View>
         <ThemedText
           type="defaultSemiBold"
-          style={[gutters.marginTop.sm, { textAlign: "center" }]}
+          style={[gutters.marginTop.md, styles.featureTitle]}
         >
           {title}
         </ThemedText>
-        <ThemedText
-          style={[
-            gutters.marginTop.xs,
-            { textAlign: "center", fontSize: 12, opacity: 0.7 },
-          ]}
-        >
+        <ThemedText style={[gutters.marginTop.xs, styles.featureDescription]}>
           {description}
         </ThemedText>
       </Card.Content>
@@ -166,20 +235,107 @@ function FeatureCard({
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: Platform.OS === "web" ? 40 : 100, // Extra space for mobile bottom nav
+  },
+  heroSection: {
+    paddingVertical: Platform.select({ web: 40, default: 32 }),
+    paddingHorizontal: Platform.select({ web: 16, default: 16 }),
+  },
+  featuresSection: {
+    paddingHorizontal: Platform.select({ web: 0, default: 0 }),
+  },
   heroIcon: {
     width: 120,
     height: 120,
     borderRadius: 60,
     alignItems: "center",
     justifyContent: "center",
+    ...Platform.select({
+      web: {
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+      },
+      default: {
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+        elevation: 4,
+      },
+    }),
+  },
+  heroTitle: {
+    fontSize: Platform.select({ web: 36, default: 28 }),
+    lineHeight: Platform.select({ web: 44, default: 36 }),
+    paddingHorizontal: 16,
+  },
+  heroSubtitle: {
+    fontSize: Platform.select({ web: 18, default: 16 }),
+    lineHeight: Platform.select({ web: 28, default: 24 }),
+    maxWidth: 600,
+    paddingHorizontal: 16,
+  },
+  primaryButton: {
+    minWidth: 200,
+    borderRadius: 12,
+  },
+  buttonContent: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: Platform.select({ web: 24, default: 20 }),
+    textAlign: "center",
   },
   featuresGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
+    gap: Platform.select({ web: 20, default: 16 }),
+    justifyContent: "center",
+    paddingHorizontal: Platform.select({ web: 0, default: 8 }),
   },
   featureCard: {
     flex: 1,
-    minWidth: 140,
+    minWidth: Platform.select({ web: 180, default: 150 }),
+    maxWidth: 240,
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  featureCardContent: {
+    paddingVertical: Platform.select({ web: 28, default: 24 }),
+    paddingHorizontal: Platform.select({ web: 20, default: 16 }),
+    gap: 8,
+  },
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  featureTitle: {
+    textAlign: "center",
+    fontSize: Platform.select({ web: 17, default: 16 }),
+  },
+  featureDescription: {
+    textAlign: "center",
+    fontSize: Platform.select({ web: 14, default: 13 }),
+    opacity: 0.7,
+    lineHeight: 20,
+  },
+  quickStartCard: {
+    maxWidth: 700,
+    alignSelf: "center",
+    width: "100%",
+    borderRadius: 16,
+  },
+  cardContentPadding: {
+    paddingVertical: Platform.select({ web: 28, default: 20 }),
+    paddingHorizontal: Platform.select({ web: 24, default: 20 }),
+  },
+  stepText: {
+    lineHeight: 24,
   },
 });
