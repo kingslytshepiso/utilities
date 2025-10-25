@@ -1,6 +1,5 @@
 {
-  "name": "cross-platform-starter-template",
-  "description": "Production-ready React Native starter template with theming, utilities, and responsive design",
+  "name": "cross-platform-starter-auth",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "keywords": [
