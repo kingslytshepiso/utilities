@@ -16,11 +16,11 @@ export interface FeatureConfig {
  * Can be overridden by environment variables
  */
 const defaultFeatures: FeatureConfig = {
-  auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === 'true',
-  analytics: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS === 'true',
-  notifications: process.env.EXPO_PUBLIC_ENABLE_NOTIFICATIONS === 'true',
-  socialLogin: process.env.EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN === 'true',
-  biometricAuth: process.env.EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH === 'true',
+  auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === "true",
+  analytics: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS === "true",
+  notifications: process.env.EXPO_PUBLIC_ENABLE_NOTIFICATIONS === "true",
+  socialLogin: process.env.EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN === "true",
+  biometricAuth: process.env.EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH === "true",
 };
 
 /**
@@ -67,11 +67,11 @@ export const getEnabledFeatures = (): (keyof FeatureConfig)[] => {
  * Feature flag constants for type safety
  */
 export const FEATURES = {
-  AUTH: 'auth' as const,
-  ANALYTICS: 'analytics' as const,
-  NOTIFICATIONS: 'notifications' as const,
-  SOCIAL_LOGIN: 'socialLogin' as const,
-  BIOMETRIC_AUTH: 'biometricAuth' as const,
+  AUTH: "auth" as const,
+  ANALYTICS: "analytics" as const,
+  NOTIFICATIONS: "notifications" as const,
+  SOCIAL_LOGIN: "socialLogin" as const,
+  BIOMETRIC_AUTH: "biometricAuth" as const,
 } as const;
 
 /**
@@ -86,7 +86,7 @@ export const FEATURE_PRESETS = {
     socialLogin: false,
     biometricAuth: false,
   },
-  
+
   // Template with authentication
   WITH_AUTH: {
     auth: true,
@@ -95,7 +95,7 @@ export const FEATURE_PRESETS = {
     socialLogin: true,
     biometricAuth: false,
   },
-  
+
   // Full-featured template
   FULL: {
     auth: true,

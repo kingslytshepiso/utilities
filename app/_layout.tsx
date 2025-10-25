@@ -26,7 +26,7 @@ function RootNavigator() {
   const { theme, isDark } = useTheme();
   const navigationTheme = isDark ? DarkTheme : DefaultTheme;
   const pathname = usePathname();
-  const isAuthEnabled = useFeature('auth');
+  const isAuthEnabled = useFeature("auth");
 
   // Check if we should show header and bottom nav
   const isAuthPage = pathname?.startsWith("/auth");
@@ -42,7 +42,11 @@ function RootNavigator() {
               <GradientBackground style={styles.gradient}>
                 {/* App Header - hide on auth and modal pages */}
                 {shouldShowNavigation && (
-                  <AppHeader projectName="Starter Template" showGithub showAuth />
+                  <AppHeader
+                    projectName="Starter Template"
+                    showGithub
+                    showAuth
+                  />
                 )}
 
                 {/* Main Content - Use Slot to render child routes */}
@@ -76,7 +80,11 @@ function RootNavigator() {
           <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
             <GradientBackground style={styles.gradient}>
               {/* App Header - always show when auth is disabled */}
-              <AppHeader projectName="Starter Template" showGithub showAuth={false} />
+              <AppHeader
+                projectName="Starter Template"
+                showGithub
+                showAuth={false}
+              />
 
               {/* Main Content - Use Slot to render child routes */}
               <View style={styles.content}>
@@ -122,8 +130,8 @@ const styles = StyleSheet.create({
 });
 
 export default function RootLayout() {
-  const isAuthEnabled = useFeature('auth');
-  
+  const isAuthEnabled = useFeature("auth");
+
   return (
     <ThemeProvider>
       {isAuthEnabled ? (

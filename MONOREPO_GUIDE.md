@@ -45,13 +45,13 @@ npm start
 
 ### Available Features
 
-| Feature | Description | Dependencies |
-|---------|-------------|--------------|
-| `auth` | Supabase authentication system | `@supabase/supabase-js`, `react-hook-form`, `yup` |
-| `analytics` | Analytics tracking | TBD |
-| `notifications` | Push notifications | TBD |
-| `socialLogin` | Social authentication | Requires `auth` |
-| `biometricAuth` | Biometric authentication | Requires `auth` |
+| Feature         | Description                    | Dependencies                                      |
+| --------------- | ------------------------------ | ------------------------------------------------- |
+| `auth`          | Supabase authentication system | `@supabase/supabase-js`, `react-hook-form`, `yup` |
+| `analytics`     | Analytics tracking             | TBD                                               |
+| `notifications` | Push notifications             | TBD                                               |
+| `socialLogin`   | Social authentication          | Requires `auth`                                   |
+| `biometricAuth` | Biometric authentication       | Requires `auth`                                   |
 
 ### Environment Variables
 
@@ -73,16 +73,16 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ### Using Feature Hooks
 
 ```tsx
-import { useFeature, useFeatures } from '@/hooks/use-features';
+import { useFeature, useFeatures } from "@/hooks/use-features";
 
 function MyComponent() {
-  const isAuthEnabled = useFeature('auth');
+  const isAuthEnabled = useFeature("auth");
   const features = useFeatures();
-  
+
   if (isAuthEnabled) {
     return <AuthenticatedContent />;
   }
-  
+
   return <PublicContent />;
 }
 ```
@@ -90,21 +90,18 @@ function MyComponent() {
 ### Conditional Rendering
 
 ```tsx
-import { FeatureGate } from '@/components/feature-gate';
+import { FeatureGate } from "@/components/feature-gate";
 
 function App() {
   return (
     <div>
       <PublicContent />
-      
+
       <FeatureGate feature="auth">
         <AuthenticatedContent />
       </FeatureGate>
-      
-      <FeatureGate 
-        feature="analytics" 
-        fallback={<div>Analytics disabled</div>}
-      >
+
+      <FeatureGate feature="analytics" fallback={<div>Analytics disabled</div>}>
         <AnalyticsDashboard />
       </FeatureGate>
     </div>
@@ -115,11 +112,11 @@ function App() {
 ### Higher-Order Components
 
 ```tsx
-import { withFeatureGate } from '@/components/feature-gate';
+import { withFeatureGate } from "@/components/feature-gate";
 
-const AuthRequiredComponent = withFeatureGate('auth')(
-  ({ user }) => <div>Welcome {user.name}!</div>
-);
+const AuthRequiredComponent = withFeatureGate("auth")(({ user }) => (
+  <div>Welcome {user.name}!</div>
+));
 ```
 
 ## 🏗️ Architecture
@@ -144,14 +141,14 @@ const AuthRequiredComponent = withFeatureGate('auth')(
 ```typescript
 // config/features.ts
 export const FEATURES = {
-  AUTH: 'auth' as const,
-  ANALYTICS: 'analytics' as const,
+  AUTH: "auth" as const,
+  ANALYTICS: "analytics" as const,
   // ... more features
 } as const;
 
 export const getFeatures = (): FeatureConfig => ({
-  auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === 'true',
-  analytics: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS === 'true',
+  auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === "true",
+  analytics: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS === "true",
   // ... more features
 });
 ```
@@ -159,16 +156,19 @@ export const getFeatures = (): FeatureConfig => ({
 ## 🎨 Variant Presets
 
 ### Basic Template
+
 - **Features**: Core theming, utilities, responsive design
 - **Use Case**: Simple apps without user authentication
 - **Setup**: `npm run setup:basic`
 
-### Auth Template  
+### Auth Template
+
 - **Features**: Basic + Supabase authentication
 - **Use Case**: Apps requiring user accounts
 - **Setup**: `npm run setup:auth`
 
 ### Full Template
+
 - **Features**: All available features
 - **Use Case**: Complex apps with full feature set
 - **Setup**: `npm run setup:full`
@@ -215,7 +215,7 @@ EXPO_PUBLIC_ENABLE_AUTH=true EXPO_PUBLIC_ENABLE_ANALYTICS=true npm start
 # Production with auth
 EXPO_PUBLIC_ENABLE_AUTH=true eas build --platform all
 
-# Production without auth  
+# Production without auth
 EXPO_PUBLIC_ENABLE_AUTH=false eas build --platform all
 ```
 
@@ -228,7 +228,7 @@ EXPO_PUBLIC_ENABLE_AUTH=false eas build --platform all
     npm run setup:basic
     eas build --platform all
 
-- name: Build Auth Variant  
+- name: Build Auth Variant
   run: |
     npm run setup:auth
     eas build --platform all
@@ -239,7 +239,7 @@ EXPO_PUBLIC_ENABLE_AUTH=false eas build --platform all
 ### Runtime Feature Updates
 
 ```typescript
-import { updateFeatures } from '@/config/features';
+import { updateFeatures } from "@/config/features";
 
 // Enable analytics at runtime
 updateFeatures({ analytics: true });
@@ -251,13 +251,13 @@ updateFeatures({ auth: false });
 ### A/B Testing
 
 ```typescript
-import { applyPreset } from '@/config/features';
+import { applyPreset } from "@/config/features";
 
 // Apply different presets based on user segment
-if (userSegment === 'premium') {
-  applyPreset('FULL');
+if (userSegment === "premium") {
+  applyPreset("FULL");
 } else {
-  applyPreset('BASIC');
+  applyPreset("BASIC");
 }
 ```
 
@@ -267,15 +267,15 @@ if (userSegment === 'premium') {
 // config/features.ts
 export const getFeatures = (): FeatureConfig => {
   const baseFeatures = {
-    auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === 'true',
+    auth: process.env.EXPO_PUBLIC_ENABLE_AUTH === "true",
     // ... other features
   };
-  
+
   // Custom logic based on build type
   if (__DEV__) {
     return { ...baseFeatures, analytics: false };
   }
-  
+
   return baseFeatures;
 };
 ```

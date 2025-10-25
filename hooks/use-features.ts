@@ -1,5 +1,9 @@
-import { useMemo } from 'react';
-import { getFeatures, isFeatureEnabled, type FeatureConfig } from '@/config/features';
+import {
+  getFeatures,
+  isFeatureEnabled,
+  type FeatureConfig,
+} from "@/config/features";
+import { useMemo } from "react";
 
 /**
  * Hook to access feature flags in components
@@ -42,9 +46,9 @@ export const useMultipleFeatures = <T extends keyof FeatureConfig>(
  */
 export const useFeatureGate = (feature: keyof FeatureConfig) => {
   const isEnabled = useFeature(feature);
-  
+
   return {
     isEnabled,
-    render: (children: React.ReactNode) => isEnabled ? children : null,
+    render: (children: React.ReactNode) => (isEnabled ? children : null),
   };
 };

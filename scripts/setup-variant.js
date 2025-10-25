@@ -3,20 +3,20 @@
 /**
  * Setup script for different template variants
  * Usage: node scripts/setup-variant.js <variant>
- * 
+ *
  * Variants:
  * - basic: Template without authentication
  * - auth: Template with authentication
  * - full: Template with all features
  */
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 const variants = {
   basic: {
-    name: 'Basic Template',
-    description: 'Cross-platform starter without authentication',
+    name: "Basic Template",
+    description: "Cross-platform starter without authentication",
     features: {
       auth: false,
       analytics: false,
@@ -25,16 +25,16 @@ const variants = {
       biometricAuth: false,
     },
     env: {
-      EXPO_PUBLIC_ENABLE_AUTH: 'false',
-      EXPO_PUBLIC_ENABLE_ANALYTICS: 'false',
-      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: 'false',
-      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: 'false',
-      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: 'false',
+      EXPO_PUBLIC_ENABLE_AUTH: "false",
+      EXPO_PUBLIC_ENABLE_ANALYTICS: "false",
+      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: "false",
+      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: "false",
+      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: "false",
     },
   },
   auth: {
-    name: 'Template with Authentication',
-    description: 'Cross-platform starter with Supabase authentication',
+    name: "Template with Authentication",
+    description: "Cross-platform starter with Supabase authentication",
     features: {
       auth: true,
       analytics: false,
@@ -43,16 +43,16 @@ const variants = {
       biometricAuth: false,
     },
     env: {
-      EXPO_PUBLIC_ENABLE_AUTH: 'true',
-      EXPO_PUBLIC_ENABLE_ANALYTICS: 'false',
-      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: 'false',
-      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: 'true',
-      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: 'false',
+      EXPO_PUBLIC_ENABLE_AUTH: "true",
+      EXPO_PUBLIC_ENABLE_ANALYTICS: "false",
+      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: "false",
+      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: "true",
+      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: "false",
     },
   },
   full: {
-    name: 'Full-Featured Template',
-    description: 'Cross-platform starter with all features enabled',
+    name: "Full-Featured Template",
+    description: "Cross-platform starter with all features enabled",
     features: {
       auth: true,
       analytics: true,
@@ -61,11 +61,11 @@ const variants = {
       biometricAuth: true,
     },
     env: {
-      EXPO_PUBLIC_ENABLE_AUTH: 'true',
-      EXPO_PUBLIC_ENABLE_ANALYTICS: 'true',
-      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: 'true',
-      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: 'true',
-      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: 'true',
+      EXPO_PUBLIC_ENABLE_AUTH: "true",
+      EXPO_PUBLIC_ENABLE_ANALYTICS: "true",
+      EXPO_PUBLIC_ENABLE_NOTIFICATIONS: "true",
+      EXPO_PUBLIC_ENABLE_SOCIAL_LOGIN: "true",
+      EXPO_PUBLIC_ENABLE_BIOMETRIC_AUTH: "true",
     },
   },
 };
@@ -73,7 +73,7 @@ const variants = {
 function createEnvFile(variant) {
   const envContent = Object.entries(variant.env)
     .map(([key, value]) => `${key}=${value}`)
-    .join('\n');
+    .join("\n");
 
   const additionalEnv = `
 # App Configuration
@@ -88,20 +88,20 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 EXPO_PUBLIC_ANALYTICS_API_KEY=your_analytics_api_key_here
 `;
 
-  fs.writeFileSync('.env', envContent + additionalEnv);
-  console.log('✅ Created .env file');
+  fs.writeFileSync(".env", envContent + additionalEnv);
+  console.log("✅ Created .env file");
 }
 
 function updatePackageJson(variant) {
-  const packageJsonPath = path.join(process.cwd(), 'package.json');
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-  
+  const packageJsonPath = path.join(process.cwd(), "package.json");
+  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+
   // Update package name and description
   packageJson.name = `cross-platform-starter-${variant}`;
   packageJson.description = variant.description;
-  
+
   fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
-  console.log('✅ Updated package.json');
+  console.log("✅ Updated package.json");
 }
 
 function createReadme(variant) {
@@ -112,8 +112,8 @@ ${variant.description}
 ## Features Enabled
 
 ${Object.entries(variant.features)
-  .map(([feature, enabled]) => `- ${feature}: ${enabled ? '✅' : '❌'}`)
-  .join('\n')}
+  .map(([feature, enabled]) => `- ${feature}: ${enabled ? "✅" : "❌"}`)
+  .join("\n")}
 
 ## Quick Start
 
@@ -127,7 +127,7 @@ Make sure to set the following environment variables in your \`.env\` file:
 
 ${Object.entries(variant.env)
   .map(([key, value]) => `- \`${key}\`=${value}`)
-  .join('\n')}
+  .join("\n")}
 
 ## Development
 
@@ -138,16 +138,16 @@ ${Object.entries(variant.env)
 - \`npm run lint\` - Run ESLint
 `;
 
-  fs.writeFileSync('README.md', readmeContent);
-  console.log('✅ Created README.md');
+  fs.writeFileSync("README.md", readmeContent);
+  console.log("✅ Created README.md");
 }
 
 function main() {
   const variant = process.argv[2];
-  
+
   if (!variant || !variants[variant]) {
-    console.log('Usage: node scripts/setup-variant.js <variant>');
-    console.log('\nAvailable variants:');
+    console.log("Usage: node scripts/setup-variant.js <variant>");
+    console.log("\nAvailable variants:");
     Object.entries(variants).forEach(([key, config]) => {
       console.log(`  ${key}: ${config.name}`);
     });
@@ -155,7 +155,7 @@ function main() {
   }
 
   const config = variants[variant];
-  
+
   console.log(`🚀 Setting up ${config.name}...`);
   console.log(`📝 ${config.description}\n`);
 
@@ -163,15 +163,14 @@ function main() {
     createEnvFile(config);
     updatePackageJson(variant);
     createReadme(config);
-    
-    console.log('\n✅ Setup complete!');
-    console.log('\nNext steps:');
-    console.log('1. Copy .env.example to .env and configure your variables');
-    console.log('2. Run: npm install');
-    console.log('3. Run: npm start');
-    
+
+    console.log("\n✅ Setup complete!");
+    console.log("\nNext steps:");
+    console.log("1. Copy .env.example to .env and configure your variables");
+    console.log("2. Run: npm install");
+    console.log("3. Run: npm start");
   } catch (error) {
-    console.error('❌ Setup failed:', error.message);
+    console.error("❌ Setup failed:", error.message);
     process.exit(1);
   }
 }
