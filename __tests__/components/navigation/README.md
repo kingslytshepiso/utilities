@@ -55,3 +55,4 @@ npm test -- __tests__/components/navigation/ --coverage
 - **expo-router**: Mocked to control pathname and navigation functions
 - **theme**: Mocked through jest.setup.js
 
+

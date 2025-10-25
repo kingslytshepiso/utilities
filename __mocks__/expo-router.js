@@ -1,4 +1,5 @@
 // Mock for expo-router
+/* global jest */
 const mockRouter = {
   push: jest.fn(),
   replace: jest.fn(),
@@ -25,4 +26,3 @@ module.exports = {
   Link: ({ children }) => children,
   Redirect: () => null,
 };
-

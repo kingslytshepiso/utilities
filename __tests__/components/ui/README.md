@@ -62,3 +62,4 @@ npm test -- __tests__/components/ui/ --coverage
 - Tests use `UNSAFE_root` from React Testing Library to verify rendering since MaterialIcons doesn't pass through testID
 - All icon mappings are tested to ensure they render without errors
 
+
