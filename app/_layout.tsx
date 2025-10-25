@@ -11,8 +11,10 @@ import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { AppHeader } from "@/components/app-header";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 import { GradientBackground } from "@/components/gradient-background";
 import { BottomNav } from "@/components/navigation";
+import { AuthProvider } from "@/contexts/auth-context";
 import { ThemeProvider, useTheme } from "@/contexts/theme-context";
 
 export const unstable_settings = {
@@ -25,49 +27,52 @@ function RootNavigator() {
   const pathname = usePathname();
 
   // Check if we should show header and bottom nav
+  const isAuthPage = pathname?.startsWith("/auth");
   const isModalPage = pathname?.startsWith("/modal");
-  const shouldShowNavigation = !isModalPage;
+  const shouldShowNavigation = !isAuthPage && !isModalPage;
 
   return (
     <PaperProvider theme={theme}>
       <NavigationThemeProvider value={navigationTheme}>
-        <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
-          <GradientBackground style={styles.gradient}>
-            {/* App Header */}
-            {shouldShowNavigation && (
-              <AppHeader
-                projectName="Starter Template"
-                showGithub
-                showAuth={false}
-              />
-            )}
+        <ProtectedRoute>
+          <SafeAreaView style={styles.container} edges={["top", "bottom"]}>
+            <GradientBackground style={styles.gradient}>
+              {/* App Header - hide on auth and modal pages */}
+              {shouldShowNavigation && (
+                <AppHeader
+                  projectName="Starter Template"
+                  showGithub
+                  showAuth
+                />
+              )}
 
-            {/* Main Content - Use Slot to render child routes */}
-            <View style={styles.content}>
-              <Slot />
-            </View>
+              {/* Main Content - Use Slot to render child routes */}
+              <View style={styles.content}>
+                <Slot />
+              </View>
 
-            {/* Bottom Navigation */}
-            {shouldShowNavigation && (
-              <BottomNav
-                items={[
-                  {
-                    path: "/",
-                    icon: "house",
-                    activeIcon: "house.fill",
-                    label: "Home",
-                  },
-                  {
-                    path: "/about",
-                    icon: "info.circle",
-                    activeIcon: "info.circle.fill",
-                    label: "About",
-                  },
-                ]}
-              />
-            )}
-          </GradientBackground>
-        </SafeAreaView>
+              {/* Bottom Navigation - hide on auth and modal pages */}
+              {shouldShowNavigation && (
+                <BottomNav
+                  items={[
+                    {
+                      path: "/",
+                      icon: "house",
+                      activeIcon: "house.fill",
+                      label: "Home",
+                    },
+                    {
+                      path: "/about",
+                      icon: "info.circle",
+                      activeIcon: "info.circle.fill",
+                      label: "About",
+                    },
+                  ]}
+                />
+              )}
+            </GradientBackground>
+          </SafeAreaView>
+        </ProtectedRoute>
         <StatusBar style={isDark ? "light" : "dark"} translucent={false} />
       </NavigationThemeProvider>
     </PaperProvider>
@@ -89,7 +94,9 @@ const styles = StyleSheet.create({
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <RootNavigator />
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

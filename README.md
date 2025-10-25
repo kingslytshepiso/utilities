@@ -1,6 +1,6 @@
-# Cross-Platform Starter Template
+# Cross-Platform Starter Template with Authentication
 
-A clean, production-ready React Native starter template built with Expo, featuring a comprehensive theming system, utility styles, and responsive design helpers for building cross-platform applications.
+A production-ready React Native starter template built with Expo, featuring a comprehensive theming system, utility styles, responsive design helpers, and **complete Supabase authentication system** for building cross-platform applications.
 
 [![GitHub](https://img.shields.io/badge/GitHub-kingslytshepiso%2Futilities-blue?logo=github)](https://github.com/kingslytshepiso/utilities)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -15,12 +15,14 @@ A production-ready React Native starter template built with Expo, featuring a co
 
 - 🎨 **Material Design 3 Theming** - Built on React Native Paper with full MD3 support
 - 🌓 **Smart Theme Switching** - Light, dark, and system modes with persistence
+- 🔐 **Complete Authentication System** - Supabase auth with login, signup, password reset, OAuth
 - 📱 **Cross-Platform** - Single codebase for iOS, Android, and Web
 - 🎯 **File-Based Routing** - Powered by Expo Router for intuitive navigation
 - 📐 **Utility Styling System** - Pre-built utilities for rapid development
 - 📱 **Responsive Design** - Helpers for building adaptive layouts
 - 🔧 **TypeScript** - Full type safety and IntelliSense support
 - 🔒 **Secure Storage** - SecureStore for mobile, localStorage for web
+- 🧪 **Comprehensive Testing** - Full test suite for authentication features
 
 ## 🚀 Quick Start
 
@@ -38,12 +40,31 @@ A production-ready React Native starter template built with Expo, featuring a co
 git clone https://github.com/kingslytshepiso/utilities.git
 cd utilities
 
+# Switch to auth variant
+git checkout variant-auth
+
 # Install dependencies
 npm install
+
+# Configure environment variables
+cp env.example .env
+# Edit .env with your Supabase credentials
 
 # Start the development server
 npm start
 ```
+
+### Authentication Setup
+
+1. **Create a Supabase project** at [supabase.com](https://supabase.com)
+2. **Get your project URL and anon key** from the Supabase dashboard
+3. **Update `.env` file** with your credentials:
+   ```bash
+   EXPO_PUBLIC_SUPABASE_URL=your_supabase_url_here
+   EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+   ```
+4. **Configure authentication providers** in your Supabase dashboard
+5. **Start the app** and test authentication flows
 
 ### Run on Different Platforms
 

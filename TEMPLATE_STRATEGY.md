@@ -1,6 +1,7 @@
 # Template Strategy: Clean & Simple
 
 ## 🎯 **The Problem with Current Approach**
+
 - Too much boilerplate for simple use cases
 - Feature flags add complexity where it's not needed
 - Users want clean templates, not configuration systems
@@ -9,6 +10,7 @@
 ## 🚀 **Better Solution: Clean Template Variants**
 
 ### **Option A: Separate Repositories (Recommended)**
+
 ```
 utilities-basic/          # Clean React Native template
 utilities-auth/          # Same template + Supabase auth
@@ -16,6 +18,7 @@ utilities-full/          # Same template + all features
 ```
 
 **Benefits:**
+
 - ✅ Each template is clean and focused
 - ✅ No unnecessary complexity
 - ✅ Easy to understand and use
@@ -23,6 +26,7 @@ utilities-full/          # Same template + all features
 - ✅ No feature flags or configuration
 
 ### **Option B: Single Repo with Clean Branches**
+
 ```
 master                   # Basic template (clean)
 variant-auth            # Auth template (auth built-in)
@@ -30,6 +34,7 @@ variant-full            # Full template (all features)
 ```
 
 **Benefits:**
+
 - ✅ Single repository to maintain
 - ✅ Clean separation of concerns
 - ✅ Easy to switch between variants
@@ -38,6 +43,7 @@ variant-full            # Full template (all features)
 ## 🎨 **Template Structure**
 
 ### **Basic Template (master)**
+
 ```
 ├── app/                 # Clean screens
 ├── components/          # Core components
@@ -47,6 +53,7 @@ variant-full            # Full template (all features)
 ```
 
 ### **Auth Template (variant-auth)**
+
 ```
 ├── app/                 # Same screens + auth screens
 ├── components/          # Core + auth components
@@ -66,6 +73,7 @@ variant-full            # Full template (all features)
 ## 📚 **User Experience**
 
 ### **For Basic Template Users:**
+
 ```bash
 git clone utilities
 cd utilities
@@ -75,6 +83,7 @@ npm start
 ```
 
 ### **For Auth Template Users:**
+
 ```bash
 git clone utilities
 cd utilities
