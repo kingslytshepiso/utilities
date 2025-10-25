@@ -39,11 +39,7 @@ function RootNavigator() {
             <GradientBackground style={styles.gradient}>
               {/* App Header - hide on auth and modal pages */}
               {shouldShowNavigation && (
-                <AppHeader
-                  projectName="Starter Template"
-                  showGithub
-                  showAuth
-                />
+                <AppHeader projectName="Starter Template" showGithub showAuth />
               )}
 
               {/* Main Content - Use Slot to render child routes */}
