@@ -1,0 +1,69 @@
+name: Sync Standalone Templates
+
+on:
+  push:
+    branches: [main]
+    paths: ["packages/**"]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Sync standalone templates
+        run: npm run sync-standalone
+
+      - name: Check for changes
+        id: changes
+        run: |
+          cd ../utilities-basic
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push to utilities-basic
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          cd ../utilities-basic
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Sync from monorepo - $(date)"
+          git push origin main
+
+      - name: Commit and push to utilities-auth
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          cd ../utilities-auth
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Sync from monorepo - $(date)"
+          git push origin main
+
+      - name: Commit and push to utilities-full
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          cd ../utilities-full
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Sync from monorepo - $(date)"
+          git push origin main
