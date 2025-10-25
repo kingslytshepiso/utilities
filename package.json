@@ -18,6 +18,9 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
+    "setup:basic": "node ./scripts/setup-variant.js basic",
+    "setup:auth": "node ./scripts/setup-variant.js auth",
+    "setup:full": "node ./scripts/setup-variant.js full",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
