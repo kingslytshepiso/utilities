@@ -30,8 +30,8 @@
     "test:auth": "jest --config=../../packages/shared/testing/jest.config.js --testPathPattern=auth"
   },
   "dependencies": {
-    "@utilities/shared-core": "workspace:*",
-    "@utilities/shared-auth": "workspace:*",
+    "@utilities/shared-core": "file:../../packages/shared/core",
+    "@utilities/shared-auth": "file:../../packages/shared/auth",
     "expo": "~54.0.13",
     "expo-router": "~6.0.11",
     "expo-status-bar": "~3.0.8",
@@ -43,7 +43,7 @@
     "react-native-web": "~0.21.0"
   },
   "devDependencies": {
-    "@utilities/shared-testing": "workspace:*",
+    "@utilities/shared-testing": "file:../../packages/shared/testing",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

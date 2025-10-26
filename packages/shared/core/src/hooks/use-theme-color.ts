@@ -4,10 +4,10 @@
  */
 
 export {
-  usePaperTheme,
-  useTheme,
   useColorScheme,
   useIsDarkMode,
+  usePaperTheme,
+  useTheme,
 } from "@/contexts/theme-context";
 
 /**

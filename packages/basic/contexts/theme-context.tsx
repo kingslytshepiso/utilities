@@ -1,6 +1,8 @@
 /**
  * Theme Context
- * Provides theme management with manual switching capability
+ *
+ * Provides theme management with manual switching capability.
+ * Self-contained implementation for package isolation.
  */
 
 import { darkTheme, lightTheme } from "@/constants/theme";
@@ -17,6 +19,8 @@ import type { MD3Theme } from "react-native-paper";
 
 type ThemeMode = "light" | "dark" | "system";
 type ColorScheme = "light" | "dark";
+
+export type { ColorScheme, ThemeMode };
 
 interface ThemeContextType {
   // Current active theme
@@ -164,11 +168,7 @@ export function ThemeProvider({
     isDark,
   };
 
-  // Don't render children until theme is loaded
-  if (isLoading) {
-    return null;
-  }
-
+  // Always render the provider, even during loading
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );

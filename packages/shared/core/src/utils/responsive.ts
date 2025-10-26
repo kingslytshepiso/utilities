@@ -3,7 +3,7 @@
  * Helpers for responsive design and device-specific layouts
  */
 
-import { Dimensions, Platform, PixelRatio } from "react-native";
+import { Dimensions, PixelRatio } from "react-native";
 
 /**
  * Get current device dimensions
@@ -54,7 +54,7 @@ export const deviceType = {
  * Responsive value selector based on screen width
  * @param values Object with breakpoint keys and values
  * @returns Value for current screen size
- * 
+ *
  * @example
  * const padding = responsive({ sm: 8, md: 16, lg: 24 });
  */
@@ -163,7 +163,7 @@ export const isPortrait = (): boolean => {
  */
 export const getGridColumns = (): number => {
   const { width } = getDeviceDimensions();
-  
+
   if (width >= breakpoints.xl) return 4;
   if (width >= breakpoints.lg) return 3;
   if (width >= breakpoints.md) return 2;
@@ -174,7 +174,7 @@ export const getGridColumns = (): number => {
  * Hook-like helper for responsive values (can be used in components)
  * Note: For actual React hooks, use with useState and Dimensions.addEventListener
  */
-export const useResponsiveValue = <T,>(values: {
+export const useResponsiveValue = <T>(values: {
   sm?: T;
   md?: T;
   lg?: T;
@@ -183,4 +183,3 @@ export const useResponsiveValue = <T,>(values: {
 }): T => {
   return responsive(values);
 };
-

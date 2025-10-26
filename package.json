@@ -19,8 +19,7 @@
     "dev:full": "npm run start --workspace=packages/full",
     "install:all": "npm install --workspaces",
     "reset:all": "npm run reset-project --workspaces",
-    "sync-standalone": "node scripts/sync-standalone.js",
-    "prepare": "npm run build:shared"
+    "sync-standalone": "node scripts/sync-standalone.js"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

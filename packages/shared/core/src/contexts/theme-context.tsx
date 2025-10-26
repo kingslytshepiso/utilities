@@ -5,7 +5,7 @@
 
 import { darkTheme, lightTheme } from "@/constants/theme";
 import * as SecureStore from "expo-secure-store";
-import React, {
+import {
   createContext,
   ReactNode,
   useContext,

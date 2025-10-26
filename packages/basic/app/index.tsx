@@ -9,14 +9,12 @@ import { Button, Card, Divider } from "react-native-paper";
 
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme } from "@/hooks/use-theme-color";
 import { gutters, layout, rounded, shadow } from "@/utils";
 import { useResponsiveValue } from "@/utils/responsive";
 
 export default function LandingScreen() {
   const theme = usePaperTheme();
-  const { user } = useAuth();
 
   // Responsive padding
   const containerPadding = useResponsiveValue({
@@ -34,11 +32,7 @@ export default function LandingScreen() {
   });
 
   const handleGetStarted = () => {
-    if (user) {
-      router.push("/about");
-    } else {
-      router.push("/auth/signup");
-    }
+    router.push("/about");
   };
 
   return (
@@ -73,7 +67,7 @@ export default function LandingScreen() {
             { textAlign: "center" },
           ]}
         >
-          {user ? `Welcome back!` : "Your App Starts Here"}
+          Your App Starts Here
         </ThemedText>
 
         <ThemedText
@@ -91,11 +85,11 @@ export default function LandingScreen() {
         <Button
           mode="contained"
           onPress={handleGetStarted}
-          icon={user ? "information-outline" : "rocket-launch"}
+          icon="rocket-launch"
           style={[gutters.marginBottom.sm, rounded.md, styles.primaryButton]}
           contentStyle={styles.buttonContent}
         >
-          {user ? "Learn More" : "Get Started"}
+          Get Started
         </Button>
 
         <Button
@@ -288,6 +282,9 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: Platform.select({ web: 24, default: 20 }),
     textAlign: "center",
+  },
+  featuresSection: {
+    marginBottom: 24,
   },
   featuresGrid: {
     gap: Platform.select({ web: 20, default: 16 }),

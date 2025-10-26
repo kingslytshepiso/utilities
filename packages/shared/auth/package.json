@@ -12,7 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@supabase/supabase-js": "^2.75.1",
-    "@utilities/shared-core": "workspace:*",
+    "@utilities/shared-core": "file:../core",
     "expo-secure-store": "^15.0.7",
     "expo-web-browser": "~15.0.8",
     "react-hook-form": "^7.65.0",
@@ -31,4 +31,3 @@
   ],
   "private": true
 }
-
