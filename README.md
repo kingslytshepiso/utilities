@@ -1,49 +1,101 @@
-# Utilities Monorepo
+# Utilities Monorepo - React Native Starter Templates
 
-A collection of production-ready React Native starter templates with different feature sets, built with Expo, TypeScript, and modern development practices.
+A collection of production-ready React Native starter templates with **shared packages** and **standalone distribution** for maximum flexibility.
 
 [![GitHub](https://img.shields.io/badge/GitHub-kingslytshepiso%2Futilities-blue?logo=github)](https://github.com/kingslytshepiso/utilities)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Expo](https://img.shields.io/badge/Expo-SDK%2052-blue.svg?logo=expo)](https://expo.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg?logo=typescript)](https://www.typescriptlang.org/)
 
+## 🏗️ **Architecture Overview**
+
+### **Shared Packages** (No Duplication!)
+
+```
+packages/
+├── shared/
+│   ├── core/              # Core components, utils, themes
+│   └── auth/              # Authentication components & logic
+│
+├── basic/                 # Basic template (uses @utilities/shared-core)
+├── auth/                  # Auth template (uses shared-core + shared-auth)
+└── full/                  # Full template (uses all shared packages)
+```
+
+### **Template Packages** (Minimal & Clean!)
+
+Each template package is now **ultra-lightweight** and imports from shared packages:
+
+```typescript
+// packages/basic/app/_layout.tsx
+import {
+  AppHeader,
+  GradientBackground,
+  BottomNav,
+  ThemeProvider,
+} from "@utilities/shared-core";
+```
+
 ## 🎯 **Template Variants**
 
 ### 📦 **Basic Template** (`packages/basic`)
-- **Clean, minimal starter** without authentication
-- **Perfect for**: Simple apps, learning, quick prototypes
+
+- **Dependencies**: `@utilities/shared-core`
 - **Features**: Theming, utilities, responsive design, navigation
+- **Perfect for**: Simple apps, learning, quick prototypes
 
 ### 🔐 **Auth Template** (`packages/auth`)
-- **Complete authentication system** with Supabase
+
+- **Dependencies**: `@utilities/shared-core` + `@utilities/shared-auth`
+- **Features**: Basic + Supabase authentication, protected routes
 - **Perfect for**: Apps requiring user accounts
-- **Features**: Basic + login, signup, password reset, OAuth, protected routes
 
 ### 🚀 **Full Template** (`packages/full`)
-- **All features enabled** for complex applications
-- **Perfect for**: Production apps with full feature set
+
+- **Dependencies**: All shared packages
 - **Features**: Auth + analytics, notifications, advanced features
+- **Perfect for**: Production apps with full feature set
 
 ## 🚀 **Quick Start**
 
-### **Option 1: Use a Specific Template**
+### **Option 1: Use Standalone Templates (Recommended)**
+
+```bash
+# Clone a specific template (no monorepo needed)
+git clone https://github.com/kingslytshepiso/utilities-basic.git
+cd utilities-basic
+
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start development
+npm start
+```
+
+**Available Standalone Templates:**
+
+- **Basic:** https://github.com/kingslytshepiso/utilities-basic
+- **Auth:** https://github.com/kingslytshepiso/utilities-auth
+- **Full:** https://github.com/kingslytshepiso/utilities-full
+
+### **Option 2: Use Monorepo for Development**
 
 ```bash
 # Clone the repository
 git clone https://github.com/kingslytshepiso/utilities.git
 cd utilities
 
+# Install all dependencies (including shared packages)
+npm run install:all
+
 # Choose your template
 cd packages/basic    # or packages/auth or packages/full
-
-# Install dependencies
-npm install
 
 # Start development
 npm start
 ```
 
-### **Option 2: Use Workspace Commands**
+### **Option 3: Use Workspace Commands**
 
 ```bash
 # Clone the repository
@@ -59,38 +111,42 @@ npm run dev:auth     # Auth template
 npm run dev:full     # Full template
 ```
 
-## 📁 **Monorepo Structure**
+## 📁 **Shared Packages Structure**
+
+### **@utilities/shared-core**
+
+Contains all the common functionality:
 
 ```
-utilities/
-├── packages/
-│   ├── basic/              # Basic template package
-│   │   ├── app/            # Expo Router screens
-│   │   ├── components/     # Reusable components
-│   │   ├── utils/         # Utility functions
-│   │   ├── constants/     # Theme configuration
-│   │   └── package.json   # Package configuration
-│   │
-│   ├── auth/               # Auth template package
-│   │   ├── app/            # Screens + auth screens
-│   │   ├── components/     # Core + auth components
-│   │   ├── lib/auth/       # Authentication logic
-│   │   ├── contexts/       # Auth context
-│   │   └── package.json    # Package configuration
-│   │
-│   └── full/               # Full template package
-│       ├── app/            # All screens
-│       ├── components/     # All components
-│       ├── lib/            # All libraries
-│       └── package.json    # Package configuration
-│
-├── package.json            # Workspace configuration
-└── README.md               # This file
+packages/shared/core/
+├── src/
+│   ├── components/         # AppHeader, GradientBackground, BottomNav, etc.
+│   ├── utils/             # Platform, responsive, styles utilities
+│   ├── constants/         # Theme configuration
+│   ├── hooks/             # useTheme, useColorScheme, etc.
+│   └── contexts/          # ThemeProvider
+└── package.json
+```
+
+### **@utilities/shared-auth**
+
+Contains all authentication functionality:
+
+```
+packages/shared/auth/
+├── src/
+│   ├── auth-button.tsx     # Auth components
+│   ├── auth-container.tsx
+│   ├── protected-route.tsx
+│   ├── auth-context.tsx   # Auth context
+│   └── lib/               # Supabase integration
+└── package.json
 ```
 
 ## 🎨 **Template Features**
 
 ### **All Templates Include:**
+
 - 🎨 **Material Design 3 Theming** - React Native Paper with full MD3 support
 - 🌓 **Smart Theme Switching** - Light, dark, and system modes
 - 📱 **Cross-Platform** - iOS, Android, and Web support
@@ -101,6 +157,7 @@ utilities/
 - 🔒 **Secure Storage** - SecureStore for mobile, localStorage for web
 
 ### **Auth Template Adds:**
+
 - 🔐 **Supabase Authentication** - Complete auth system
 - 👤 **User Management** - Login, signup, password reset
 - 🔒 **Protected Routes** - Route protection and guards
@@ -108,6 +165,7 @@ utilities/
 - 🧪 **Comprehensive Testing** - Full test suite for auth features
 
 ### **Full Template Adds:**
+
 - 📊 **Analytics Integration** - User behavior tracking
 - 🔔 **Push Notifications** - Real-time notifications
 - 🔐 **Biometric Authentication** - Fingerprint/Face ID support
@@ -118,8 +176,11 @@ utilities/
 ### **Workspace Commands**
 
 ```bash
-# Install all dependencies
+# Install all dependencies (including shared packages)
 npm run install:all
+
+# Build all packages (including shared packages)
+npm run build
 
 # Start specific template
 npm run dev:basic
@@ -131,105 +192,108 @@ npm run test
 
 # Lint all packages
 npm run lint
+```
 
-# Build all packages
+### **Shared Package Development**
+
+```bash
+# Build shared packages
+cd packages/shared/core
 npm run build
+
+cd packages/shared/auth
+npm run build
+
+# Watch mode for development
+npm run dev
 ```
 
-### **Individual Package Commands**
+## 🔧 **Adding New Features**
 
-```bash
-# Navigate to specific package
-cd packages/basic
+### **To Shared Core Package:**
 
-# Install dependencies
-npm install
+1. Add component/utility to `packages/shared/core/src/`
+2. Export from `packages/shared/core/src/index.ts`
+3. All templates automatically get the new feature
 
-# Start development server
-npm start
+### **To Shared Auth Package:**
 
-# Run on specific platforms
-npm run android
-npm run ios
-npm run web
+1. Add auth component to `packages/shared/auth/src/`
+2. Export from `packages/shared/auth/src/index.ts`
+3. Auth and Full templates get the new feature
 
-# Run tests
-npm test
-npm run test:coverage
-```
+### **To Template Packages:**
 
-## 📚 **Documentation**
+1. Import from shared packages: `import { Component } from "@utilities/shared-core"`
+2. Use the component in your template
+3. No duplication needed!
 
-Each template package includes comprehensive documentation:
+## 📚 **Benefits of Shared Architecture**
 
-- **`packages/basic/README.md`** - Basic template setup and usage
-- **`packages/auth/README.md`** - Auth template with Supabase setup
-- **`packages/full/README.md`** - Full template with all features
+### **✅ Eliminates Duplication**
 
-## 🔧 **Configuration**
+- **No more copied components** across packages
+- **Single source of truth** for common functionality
+- **Easy maintenance** - update once, affects all templates
 
-### **Environment Variables**
+### **✅ Clean Template Packages**
 
-Each template includes an `env.example` file with required environment variables:
+- **Ultra-lightweight** template packages
+- **Clear dependencies** - easy to see what each template includes
+- **Focused templates** - each template has a specific purpose
 
-```bash
-# Copy example file
-cp env.example .env
+### **✅ Easy Distribution**
 
-# Edit with your configuration
-# Basic template: No additional config needed
-# Auth template: Add Supabase credentials
-# Full template: Add all service credentials
-```
+- **Shared packages** can be published to npm
+- **Template packages** are simple and focused
+- **Users get exactly what they need**
 
-### **Template-Specific Setup**
+### **✅ Scalable Architecture**
 
-1. **Basic Template**: No additional setup required
-2. **Auth Template**: Configure Supabase project and credentials
-3. **Full Template**: Configure all services (Supabase, analytics, notifications)
+- **Add new shared packages** for new feature sets
+- **Compose templates** by combining shared packages
+- **Easy to maintain** and extend
 
 ## 🚀 **Deployment**
 
 ### **Building for Production**
 
 ```bash
+# Build all shared packages
+npm run build --workspace=packages/shared/core
+npm run build --workspace=packages/shared/auth
+
 # Build specific template
 cd packages/basic
 npm run build
-
-# Or use workspace commands
-npm run build --workspace=packages/basic
 ```
 
-### **Platform-Specific Builds**
+### **Publishing Shared Packages**
 
 ```bash
-# iOS
-npm run ios
+# Publish shared packages to npm (optional)
+cd packages/shared/core
+npm publish
 
-# Android
-npm run android
-
-# Web
-npm run web
+cd packages/shared/auth
+npm publish
 ```
 
 ## 🤝 **Contributing**
 
 1. **Fork the repository**
 2. **Create a feature branch**
-3. **Make your changes**
-4. **Test all templates**
-5. **Submit a pull request**
+3. **Add features to appropriate shared packages**
+4. **Update template packages to use new features**
+5. **Test all templates**
+6. **Submit a pull request**
 
-### **Adding New Features**
+### **Adding New Shared Packages**
 
-When adding new features:
-
-1. **Update the appropriate template(s)**
-2. **Add tests for new functionality**
-3. **Update documentation**
-4. **Ensure backward compatibility**
+1. **Create new shared package**: `packages/shared/analytics/`
+2. **Add to workspace**: Update `package.json` workspaces
+3. **Create package.json** with proper dependencies
+4. **Add to templates** that need the new functionality
 
 ## 📄 **License**
 
@@ -247,23 +311,23 @@ MIT License - feel free to use these templates for personal or commercial projec
 ## 💡 **Tips**
 
 1. **Start Simple**: Begin with the basic template and add features as needed
-2. **Template Philosophy**: Each template is self-contained and focused
-3. **Clean Separation**: No complex configuration or feature flags
-4. **Easy Migration**: Switch between templates as your needs grow
+2. **Shared Philosophy**: Common code lives in shared packages, templates are minimal
+3. **Clean Separation**: Each shared package has a specific purpose
+4. **Easy Maintenance**: Update shared packages to fix bugs across all templates
 5. **Production Ready**: All templates are production-ready with proper testing
 
 ## 🐛 **Troubleshooting**
 
 ### **Common Issues**
 
-1. **Metro bundler cache issues**: `npx expo start -c`
-2. **Package installation issues**: `rm -rf node_modules && npm install`
-3. **iOS Simulator issues**: `npx expo run:ios --device`
+1. **Shared package not found**: Run `npm run install:all` to install all dependencies
+2. **Build errors**: Make sure shared packages are built first
+3. **Import errors**: Check that shared packages are properly exported
 
 ### **Getting Help**
 
-1. Check the template-specific documentation
-2. Review the code comments in the templates
+1. Check the shared package documentation
+2. Review the template-specific documentation
 3. Open an issue in the repository
 4. Check the [Expo documentation](https://docs.expo.dev)
 
@@ -271,4 +335,4 @@ MIT License - feel free to use these templates for personal or commercial projec
 
 **Happy coding! 🚀**
 
-Choose the template that fits your needs and start building amazing React Native applications!
+This shared architecture eliminates duplication while keeping templates clean and focused. Choose the template that fits your needs and start building amazing React Native applications!

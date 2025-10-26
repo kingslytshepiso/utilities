@@ -5,9 +5,17 @@ node_modules/
 
 # Expo
 .expo/
-dist/
 web-build/
 expo-env.d.ts
+
+# Build outputs (monorepo packages)
+dist/
+**/dist/
+
+# Coverage reports (allow in packages, ignore root)
+/coverage/
+coverage/
+**/coverage/
 
 # Native
 .kotlin/
@@ -42,3 +50,15 @@ app-example
 # generated native folders
 /ios
 /android
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.log
+.cache/

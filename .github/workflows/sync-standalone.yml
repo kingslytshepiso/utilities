@@ -67,3 +67,4 @@ jobs:
           git add .
           git commit -m "Sync from monorepo - $(date)"
           git push origin main
+
