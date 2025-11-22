@@ -19,11 +19,10 @@ import { Menu } from "react-native-paper";
 import { ThemedText } from "@/components/themed-text";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { UserMenuModal } from "@/components/user-menu-modal";
-import { useAuth } from "@/contexts/auth-context";
 import { usePaperTheme, useTheme } from "@/hooks/use-theme-color";
 import { gutters, layout, rounded, supportsHaptics } from "@/utils";
 
-interface AppHeaderProps {
+export interface AppHeaderProps {
   /**
    * Project name to display
    * @default "Project Template"
@@ -43,6 +42,14 @@ interface AppHeaderProps {
    * @default true
    */
   showAuth?: boolean;
+  /**
+   * Optional user object for auth functionality
+   */
+  user?: { email?: string } | null;
+  /**
+   * Optional sign out function
+   */
+  signOut?: () => Promise<void> | void;
 }
 
 export function AppHeader({
@@ -50,10 +57,11 @@ export function AppHeader({
   githubUrl = "https://github.com/kingslytshepiso/utilities",
   showGithub = true,
   showAuth = true,
+  user = null,
+  signOut,
 }: AppHeaderProps) {
   const theme = usePaperTheme();
   const { isDark, toggleTheme } = useTheme();
-  const { user, signOut } = useAuth();
   const [userMenuVisible, setUserMenuVisible] = React.useState(false);
 
   const handleThemeToggle = async () => {
@@ -78,7 +86,9 @@ export function AppHeader({
   const handleSignOut = async () => {
     console.log("[AppHeader] Sign out initiated");
     setUserMenuVisible(false);
-    await signOut();
+    if (signOut) {
+      await signOut();
+    }
   };
 
   const closeUserMenu = () => {

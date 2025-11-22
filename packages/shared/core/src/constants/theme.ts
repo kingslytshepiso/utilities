@@ -7,6 +7,9 @@ import { Platform } from "react-native";
 import type { MD3Theme } from "react-native-paper";
 import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
 
+// Re-export MD3Theme type for convenience
+export type { MD3Theme } from "react-native-paper";
+
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
 

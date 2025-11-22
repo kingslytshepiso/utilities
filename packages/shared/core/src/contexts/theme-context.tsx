@@ -15,10 +15,10 @@ import {
 import { Platform, useColorScheme as useSystemColorScheme } from "react-native";
 import type { MD3Theme } from "react-native-paper";
 
-type ThemeMode = "light" | "dark" | "system";
-type ColorScheme = "light" | "dark";
+export type ThemeMode = "light" | "dark" | "system";
+export type ColorScheme = "light" | "dark";
 
-interface ThemeContextType {
+export interface ThemeContextType {
   // Current active theme
   theme: MD3Theme;
   // Current color scheme (light or dark)

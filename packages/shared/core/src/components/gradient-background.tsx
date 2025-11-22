@@ -9,7 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import type { ViewProps } from "react-native";
 import { StyleSheet } from "react-native";
 
-interface GradientBackgroundProps extends ViewProps {
+export interface GradientBackgroundProps extends ViewProps {
   children?: React.ReactNode;
   /**
    * Custom gradient colors (overrides theme colors)
