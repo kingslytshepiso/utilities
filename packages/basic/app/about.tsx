@@ -6,12 +6,18 @@
 import { Linking, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Card, Divider, List } from "react-native-paper";
 
-import { ThemedText } from "@/components/themed-text";
-import { Collapsible } from "@/components/ui/collapsible";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, layout, platform, rounded, shadow } from "@/utils";
-import { useResponsiveValue } from "@/utils/responsive";
+import {
+  ThemedText,
+  Collapsible,
+  IconSymbol,
+  usePaperTheme,
+  gutters,
+  layout,
+  platform,
+  rounded,
+  shadow,
+  useResponsiveValue,
+} from "@utilities/shared-core";
 
 export default function AboutScreen() {
   const theme = usePaperTheme();

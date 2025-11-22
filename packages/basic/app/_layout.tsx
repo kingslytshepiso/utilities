@@ -10,10 +10,13 @@ import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { AppHeader } from "@/components/app-header";
-import { GradientBackground } from "@/components/gradient-background";
-import { BottomNav } from "@/components/navigation";
-import { ThemeProvider, useTheme } from "@/contexts/theme-context";
+import {
+  AppHeader,
+  GradientBackground,
+  BottomNav,
+  ThemeProvider,
+  useTheme,
+} from "@utilities/shared-core";
 
 export const unstable_settings = {
   initialRouteName: "index",

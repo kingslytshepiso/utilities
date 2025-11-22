@@ -23,15 +23,14 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "jest --config=../../packages/shared/testing/jest.config.js",
-    "test:watch": "jest --config=../../packages/shared/testing/jest.config.js --watch",
-    "test:coverage": "jest --config=../../packages/shared/testing/jest.config.js --coverage"
+    "test": "jest --config=../../jest.config.js",
+    "test:watch": "jest --config=../../jest.config.js --watch",
+    "test:coverage": "jest --config=../../jest.config.js --coverage"
   },
   "dependencies": {
     "@utilities/shared-core": "file:../../packages/shared/core",
     "expo": "~54.0.13",
     "expo-router": "~6.0.11",
-    "expo-secure-store": "~15.0.7",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -41,7 +40,6 @@
     "react-native-web": "~0.21.0"
   },
   "devDependencies": {
-    "@utilities/shared-testing": "file:../../packages/shared/testing",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

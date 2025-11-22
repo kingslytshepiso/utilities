@@ -2,12 +2,17 @@ import { router } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { Button, Card } from "react-native-paper";
 
-import { GradientBackground } from "@/components/gradient-background";
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, layout, rounded, shadow } from "@/utils";
+import {
+  GradientBackground,
+  ThemedText,
+  ThemedView,
+  IconSymbol,
+  usePaperTheme,
+  gutters,
+  layout,
+  rounded,
+  shadow,
+} from "@utilities/shared-core";
 
 export default function ModalScreen() {
   const theme = usePaperTheme();

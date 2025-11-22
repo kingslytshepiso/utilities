@@ -39,21 +39,11 @@
             "backgroundColor": "#000000"
           }
         }
-      ],
-      [
-        "expo-secure-store",
-        {
-          "faceIDPermission": "Allow $(PRODUCT_NAME) to access Face ID for secure authentication."
-        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    },
-    "extra": {
-      "SUPABASE_URL": "https://svwpscvbrcvoenxxujtc.supabase.co",
-      "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2d3BzY3ZicmN2b2VueHh1anRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NDE4ODAsImV4cCI6MjA3NjMxNzg4MH0.w2dw6NACTrG_eTl0bDKigWI-4dMJ7k_8_VhjiCzzyyE"
     }
   }
 }

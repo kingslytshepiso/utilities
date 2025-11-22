@@ -7,11 +7,16 @@ import { router } from "expo-router";
 import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Card, Divider } from "react-native-paper";
 
-import { ThemedText } from "@/components/themed-text";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, layout, rounded, shadow } from "@/utils";
-import { useResponsiveValue } from "@/utils/responsive";
+import {
+  ThemedText,
+  IconSymbol,
+  usePaperTheme,
+  gutters,
+  layout,
+  rounded,
+  shadow,
+  useResponsiveValue,
+} from "@utilities/shared-core";
 
 export default function LandingScreen() {
   const theme = usePaperTheme();
