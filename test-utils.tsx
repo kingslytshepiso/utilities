@@ -3,8 +3,8 @@
  * Common test helpers, wrappers, and utilities
  */
 
-import { lightTheme } from "@/constants/theme";
 import { render, RenderOptions } from "@testing-library/react-native";
+import { lightTheme } from "@utilities/shared-core/constants/theme";
 import React from "react";
 import { PaperProvider } from "react-native-paper";
 
@@ -35,4 +35,3 @@ export * from "@testing-library/react-native";
  * Export the custom render as default
  */
 export { renderWithProviders as render };
-

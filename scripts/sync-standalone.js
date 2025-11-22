@@ -114,7 +114,6 @@ function updatePackageJson(template, targetDir) {
   // Remove workspace dependencies
   delete packageJson.dependencies["@utilities/shared-core"];
   delete packageJson.dependencies["@utilities/shared-auth"];
-  delete packageJson.dependencies["@utilities/shared-testing"];
 
   // Add all shared dependencies
   packageJson.dependencies = {
@@ -205,57 +204,55 @@ function copySharedCode(template, targetDir) {
 }
 
 function copyTestingSetup(targetDir) {
-  const testingSource = "packages/shared/testing";
-  const testingTarget = path.join(targetDir, "__tests__");
+  const sharedSource = "packages/shared";
+  const testUtilsSource = path.join(sharedSource, "test-utils.tsx");
+  const jestConfigSource = path.join(sharedSource, "jest.config.js");
+  const jestSetupSource = path.join(sharedSource, "jest.setup.js");
+  const testsTarget = path.join(targetDir, "__tests__");
 
-  if (fs.existsSync(testingSource)) {
-    // Create tests directory
-    if (!fs.existsSync(testingTarget)) {
-      fs.mkdirSync(testingTarget, { recursive: true });
-    }
+  if (!fs.existsSync(testsTarget)) {
+    fs.mkdirSync(testsTarget, { recursive: true });
+  }
 
-    // Copy test utilities
+  if (fs.existsSync(testUtilsSource)) {
     if (process.platform === "win32") {
-      execSync(`robocopy "${testingSource}/src" "${testingTarget}" /E`, {
+      execSync(
+        `copy "${testUtilsSource}" "${path.join(testsTarget, "test-utils.tsx")}"`,
+        {
+          stdio: "inherit",
+        }
+      );
+    } else {
+      execSync(
+        `cp ${testUtilsSource} ${path.join(testsTarget, "test-utils.tsx")}`,
+        {
+          stdio: "inherit",
+        }
+      );
+    }
+  }
+
+  if (fs.existsSync(jestConfigSource)) {
+    if (process.platform === "win32") {
+      execSync(`copy "${jestConfigSource}" "${targetDir}/"`, {
         stdio: "inherit",
       });
     } else {
-      execSync(`cp -r ${testingSource}/src/* ${testingTarget}/`, {
+      execSync(`cp ${jestConfigSource} ${targetDir}/`, {
         stdio: "inherit",
       });
     }
+  }
 
-    // Copy Jest configuration
+  if (fs.existsSync(jestSetupSource)) {
     if (process.platform === "win32") {
-      execSync(`copy "${testingSource}/jest.config.js" "${targetDir}/"`, {
-        stdio: "inherit",
-      });
-      execSync(`copy "${testingSource}/jest.setup.js" "${targetDir}/"`, {
+      execSync(`copy "${jestSetupSource}" "${targetDir}/"`, {
         stdio: "inherit",
       });
     } else {
-      execSync(`cp ${testingSource}/jest.config.js ${targetDir}/`, {
+      execSync(`cp ${jestSetupSource} ${targetDir}/`, {
         stdio: "inherit",
       });
-      execSync(`cp ${testingSource}/jest.setup.js ${targetDir}/`, {
-        stdio: "inherit",
-      });
-    }
-
-    // Copy mocks
-    const mocksSource = path.join(testingSource, "mocks");
-    const mocksTarget = path.join(targetDir, "__mocks__");
-
-    if (fs.existsSync(mocksSource)) {
-      if (process.platform === "win32") {
-        execSync(`robocopy "${mocksSource}" "${mocksTarget}" /E`, {
-          stdio: "inherit",
-        });
-      } else {
-        execSync(`cp -r ${mocksSource}/* ${mocksTarget}/`, {
-          stdio: "inherit",
-        });
-      }
     }
   }
 }

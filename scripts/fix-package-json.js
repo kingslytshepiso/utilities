@@ -70,12 +70,9 @@ templates.forEach((template) => {
     // Remove workspace dependencies
     delete packageJson.dependencies["@utilities/shared-core"];
     delete packageJson.dependencies["@utilities/shared-auth"];
-    delete packageJson.dependencies["@utilities/shared-testing"];
-
     // Remove workspace devDependencies
     delete packageJson.devDependencies["@utilities/shared-core"];
     delete packageJson.devDependencies["@utilities/shared-auth"];
-    delete packageJson.devDependencies["@utilities/shared-testing"];
 
     // Add all shared dependencies
     packageJson.dependencies = {
