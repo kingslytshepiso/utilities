@@ -7,9 +7,9 @@
 const path = require("path");
 const fs = require("fs");
 
-// Define __dirname - use process.cwd() since this file is at the project root
-// This avoids circular require.resolve() calls that can cause ES module issues
-const __dirname = process.cwd();
+// Use process.cwd() since this file is at the project root
+// This is more reliable than __dirname in some contexts
+const rootDir = process.cwd();
 
 // Get the default resolver from react-native (used by jest-expo)
 let defaultResolver;
@@ -39,15 +39,15 @@ module.exports = (request, options) => {
   const normalizedPath = testFilePath.replace(/\\/g, "/");
 
   if (normalizedPath.includes("/packages/auth/")) {
-    packageRoot = path.join(__dirname, "packages", "auth");
+    packageRoot = path.join(rootDir, "packages", "auth");
   } else if (normalizedPath.includes("/packages/full/")) {
-    packageRoot = path.join(__dirname, "packages", "full");
+    packageRoot = path.join(rootDir, "packages", "full");
   } else if (normalizedPath.includes("/packages/basic/")) {
-    packageRoot = path.join(__dirname, "packages", "basic");
+    packageRoot = path.join(rootDir, "packages", "basic");
   } else if (normalizedPath.includes("/packages/shared/core/")) {
-    packageRoot = path.join(__dirname, "packages", "shared", "core", "src");
+    packageRoot = path.join(rootDir, "packages", "shared", "core", "src");
   } else if (normalizedPath.includes("/packages/shared/auth/")) {
-    packageRoot = path.join(__dirname, "packages", "shared", "auth", "src");
+    packageRoot = path.join(rootDir, "packages", "shared", "auth", "src");
   }
 
   // If we found a package root, try to resolve the import

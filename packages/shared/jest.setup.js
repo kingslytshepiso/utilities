@@ -13,7 +13,8 @@ jest.mock("expo", () => ({
   registerRootComponent: () => {},
 }));
 
-jest.mock("expo-winter-runtime", () => ({}));
+// Mock expo-winter-runtime (mock file is in root __mocks__/ directory)
+jest.mock("expo-winter-runtime");
 
 // Silence the warning: Animated: `useNativeDriver` is not supported
 // Note: This mock may not be available in all environments, so it's commented out

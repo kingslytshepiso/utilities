@@ -204,3 +204,4 @@ npm test
 The root `jest.config.js` and `jest.setup.js` are the **central nervous system** for all tests in the monorepo. Every package references them, ensuring consistent test behavior across all workspaces. There are no local Jest configs in packages—everything is centralized at the root.
 
 
+
