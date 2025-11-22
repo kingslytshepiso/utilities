@@ -1,18 +1,13 @@
-// Jest setup file - runs after the test environment is set up
+/* eslint-env jest */
+/* global jest, beforeAll, afterAll */
+// Compose shared and root helpers so every workspace consumes the same mocks
+require("./packages/shared/jest.setup.js");
 
-// Mock Expo Winter ImportMetaRegistry to prevent import scope errors
-// Reference: https://github.com/expo/expo/issues/...
-jest.mock("expo/src/winter/ImportMetaRegistry", () => ({
-  ImportMetaRegistry: {
-    get url() {
-      return null;
-    },
-  },
-}));
+jest.mock("@utilities/shared-core/contexts/theme-context", () => {
+  const { lightTheme } = jest.requireActual(
+    "@utilities/shared-core/constants/theme"
+  );
 
-// Mock theme context to avoid async loading issues in tests
-jest.mock("./contexts/theme-context", () => {
-  const { lightTheme } = jest.requireActual("./constants/theme");
   return {
     ThemeProvider: ({ children }) => children,
     useTheme: () => ({
@@ -29,14 +24,10 @@ jest.mock("./contexts/theme-context", () => {
   };
 });
 
-// Polyfill structuredClone for Jest environment
 if (typeof global.structuredClone === "undefined") {
-  global.structuredClone = (obj) => {
-    return JSON.parse(JSON.stringify(obj));
-  };
+  global.structuredClone = (obj) => JSON.parse(JSON.stringify(obj));
 }
 
-// Suppress act() warnings in tests - these are expected for async state updates in providers
 const originalError = console.error;
 beforeAll(() => {
   console.error = (...args) => {
