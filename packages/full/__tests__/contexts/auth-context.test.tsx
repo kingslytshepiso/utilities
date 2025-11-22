@@ -22,6 +22,15 @@ jest.mock("@/lib/auth", () => ({
 describe("AuthContext", () => {
   let mockAuthProvider: any;
 
+  // Use real timers for this test suite since waitFor relies on real timers
+  beforeAll(() => {
+    jest.useRealTimers();
+  });
+
+  afterAll(() => {
+    jest.useFakeTimers();
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
 

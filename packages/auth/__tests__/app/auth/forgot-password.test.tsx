@@ -30,7 +30,6 @@ describe("ForgotPasswordScreen", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
 
     mockUseAuth.mockReturnValue({
       isAuthenticated: false,
@@ -51,9 +50,6 @@ describe("ForgotPasswordScreen", () => {
     });
   });
 
-  afterEach(() => {
-    jest.useRealTimers();
-  });
 
   describe("rendering", () => {
     it("should render forgot password form", () => {
@@ -163,8 +159,10 @@ describe("ForgotPasswordScreen", () => {
         expect(resetPassword).toHaveBeenCalled();
       });
 
-      // Fast-forward timer
+      // Use fake timers for this specific test to advance time
+      jest.useFakeTimers();
       jest.advanceTimersByTime(3000);
+      jest.useRealTimers();
 
       await waitFor(() => {
         expect(router.back).toHaveBeenCalled();
