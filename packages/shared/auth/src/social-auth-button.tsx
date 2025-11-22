@@ -3,11 +3,11 @@
  * Platform-aware OAuth provider buttons
  */
 
-import { ThemedText } from "@/components/themed-text";
-import { useAuthInputSize, useAuthSpacing } from "@/hooks/use-responsive-auth";
-import { OAuthProvider } from "@/types/auth";
-import { gutters } from "@/utils";
-import { platform } from "@/utils/platform";
+import { ThemedText } from "@utilities/shared-core";
+import { useAuthInputSize, useAuthSpacing } from "@utilities/shared-core";
+import { OAuthProvider } from "./types/auth";
+import { gutters } from "@utilities/shared-core";
+import { platform } from "@utilities/shared-core";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Divider } from "react-native-paper";

@@ -10,14 +10,13 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "build:shared": "npm run build --workspace=packages/shared/core --workspace=packages/shared/auth",
-    "test": "npm run test --workspaces",
-    "test:no-full": "npm run test --workspace=packages/basic --workspace=packages/auth --workspace=packages/shared/core --workspace=packages/shared/auth",
+    "test": "npm run test --workspace=packages/basic --workspace=packages/auth",
+    "test:shared": "npm run test --workspace=packages/shared/core --workspace=packages/shared/auth",
     "test:coverage": "npm run test:coverage --workspaces",
     "lint": "npm run lint --workspaces",
     "clean": "npm run clean --workspaces",
     "dev:basic": "npm run start --workspace=packages/basic",
     "dev:auth": "npm run start --workspace=packages/auth",
-    "dev:full": "npm run start --workspace=packages/full",
     "install:all": "npm install --workspaces",
     "reset:all": "npm run reset-project --workspaces",
     "sync-standalone": "node scripts/sync-standalone.js"

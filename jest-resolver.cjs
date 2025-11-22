@@ -40,8 +40,6 @@ module.exports = (request, options) => {
 
   if (normalizedPath.includes("/packages/auth/")) {
     packageRoot = path.join(rootDir, "packages", "auth");
-  } else if (normalizedPath.includes("/packages/full/")) {
-    packageRoot = path.join(rootDir, "packages", "full");
   } else if (normalizedPath.includes("/packages/basic/")) {
     packageRoot = path.join(rootDir, "packages", "basic");
   } else if (normalizedPath.includes("/packages/shared/core/")) {

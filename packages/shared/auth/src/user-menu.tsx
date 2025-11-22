@@ -3,10 +3,8 @@
  * Displays user profile and auth actions in the header
  */
 
-import { ThemedText } from "@/components/themed-text";
-import { useAuth } from "@/contexts/auth-context";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { platform } from "@/utils/platform";
+import { ThemedText, usePaperTheme, platform } from "@utilities/shared-core";
+import { useAuth } from "./auth-context";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";

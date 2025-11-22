@@ -3,8 +3,7 @@
  * Platform and screen-size aware button for auth actions
  */
 
-import { useAuthInputSize } from "@/hooks/use-responsive-auth";
-import { gutters } from "@/utils";
+import { useAuthInputSize, gutters } from "@utilities/shared-core";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";

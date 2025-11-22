@@ -3,8 +3,8 @@
  * Wraps routes that require authentication
  */
 
-import { ThemedView } from "@/components/themed-view";
-import { useAuth } from "@/contexts/auth-context";
+import { ThemedView } from "@utilities/shared-core";
+import { useAuth } from "./auth-context";
 import { router, useSegments } from "expo-router";
 import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";

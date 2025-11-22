@@ -16,7 +16,6 @@ function resolveAtPath(importPath) {
   const rootDir = __dirname;
   const packages = [
     path.join(rootDir, "packages", "auth"),
-    path.join(rootDir, "packages", "full"),
     path.join(rootDir, "packages", "basic"),
     path.join(rootDir, "packages", "shared", "core", "src"),
   ];

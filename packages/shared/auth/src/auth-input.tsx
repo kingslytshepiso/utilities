@@ -3,8 +3,7 @@
  * Platform and screen-size aware input field for auth forms
  */
 
-import { useAuthInputSize } from "@/hooks/use-responsive-auth";
-import { gutters } from "@/utils";
+import { useAuthInputSize, gutters } from "@utilities/shared-core";
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";

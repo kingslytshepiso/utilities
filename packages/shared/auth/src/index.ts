@@ -12,3 +12,9 @@ export * from "./auth-context";
 
 // Auth library
 export * from "./lib";
+
+// Auth types
+export * from "./types/auth";
+
+// Auth config
+export { authConfig } from "./config/auth.config";

@@ -3,7 +3,7 @@
  * Provides authentication state and methods throughout the app
  */
 
-import { getAuthProvider } from "@/lib/auth";
+import { getAuthProvider } from "./lib";
 import type {
   AuthSession,
   AuthState,
@@ -14,7 +14,7 @@ import type {
   SignInCredentials,
   SignUpCredentials,
   User,
-} from "@/types/auth";
+} from "./types/auth";
 import React, {
   createContext,
   useCallback,

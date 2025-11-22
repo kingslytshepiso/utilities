@@ -3,7 +3,7 @@
  * Creates and returns the Supabase authentication provider
  */
 
-import { IAuthProvider } from "@/types/auth";
+import { IAuthProvider } from "../types/auth";
 import { SupabaseAuthProvider } from "./supabase-provider";
 
 /**
@@ -37,6 +37,7 @@ export const initializeAuth = async (): Promise<void> => {
   await provider.initialize();
 };
 
-// Re-export types for convenience
-export { authConfig } from "@/config/auth.config";
-export * from "@/types/auth";
+// Re-export types and config for convenience
+export { authConfig } from "../config/auth.config";
+export * from "../types/auth";
+export * from "./validation/auth.schema";

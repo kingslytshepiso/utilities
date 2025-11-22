@@ -18,8 +18,7 @@ packages/
 │   └── auth/              # Authentication components & logic
 │
 ├── basic/                 # Basic template (uses @utilities/shared-core)
-├── auth/                  # Auth template (uses shared-core + shared-auth)
-└── full/                  # Full template (uses all shared packages)
+└── auth/                  # Auth template (uses shared-core + shared-auth)
 ```
 
 ### **Template Packages** (Minimal & Clean!)
@@ -50,11 +49,6 @@ import {
 - **Features**: Basic + Supabase authentication, protected routes
 - **Perfect for**: Apps requiring user accounts
 
-### 🚀 **Full Template** (`packages/full`)
-
-- **Dependencies**: All shared packages
-- **Features**: Auth + analytics, notifications, advanced features
-- **Perfect for**: Production apps with full feature set
 
 ## 🚀 **Quick Start**
 
@@ -76,11 +70,10 @@ npm start
 
 - **Basic:** https://github.com/kingslytshepiso/utilities-basic
 - **Auth:** https://github.com/kingslytshepiso/utilities-auth
-- **Full:** https://github.com/kingslytshepiso/utilities-full
 
 ### **Option 2: Use Monorepo for Development**
 
-> **Note:** The root workspace is a tooling/packaging layer only; there is no Expo `app.json` here anymore. Always run `npm start` from inside the chosen package (`packages/basic`, `packages/auth`, or `packages/full`) or use the workspace scripts below.
+> **Note:** The root workspace is a tooling/packaging layer only; there is no Expo `app.json` here anymore. Always run `npm start` from inside the chosen package (`packages/basic` or `packages/auth`) or use the workspace scripts below.
 
 ```bash
 # Clone the repository
@@ -91,7 +84,7 @@ cd utilities
 npm run install:all
 
 # Choose your template
-cd packages/basic    # or packages/auth or packages/full
+cd packages/basic    # or packages/auth
 
 # Start development
 npm start
@@ -110,7 +103,6 @@ npm run install:all
 # Start specific template
 npm run dev:basic    # Basic template
 npm run dev:auth     # Auth template
-npm run dev:full     # Full template
 ```
 
 ## 📁 **Shared Packages Structure**
@@ -166,12 +158,7 @@ packages/shared/auth/
 - 🌐 **OAuth Integration** - Social authentication
 - 🧪 **Comprehensive Testing** - Full test suite for auth features
 
-### **Full Template Adds:**
 
-- 📊 **Analytics Integration** - User behavior tracking
-- 🔔 **Push Notifications** - Real-time notifications
-- 🔐 **Biometric Authentication** - Fingerprint/Face ID support
-- 📈 **Advanced Features** - All available functionality
 
 ## 🛠️ **Development**
 
@@ -187,7 +174,6 @@ npm run build
 # Start specific template
 npm run dev:basic
 npm run dev:auth
-npm run dev:full
 
 # Run tests for all packages
 npm run test
@@ -228,7 +214,7 @@ npm run dev
 
 1. Add auth component to `packages/shared/auth/src/`
 2. Export from `packages/shared/auth/src/index.ts`
-3. Auth and Full templates get the new feature
+3. Auth template gets the new feature
 
 ### **To Template Packages:**
 

@@ -3,14 +3,16 @@
  * Adaptive container for auth screens based on screen size
  */
 
-import { ThemedText } from "@/components/themed-text";
 import {
+  ThemedText,
   useAuthFormWidth,
   useAuthLayout,
   useAuthSpacing,
-} from "@/hooks/use-responsive-auth";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters, rounded, shadow } from "@/utils";
+  usePaperTheme,
+  gutters,
+  rounded,
+  shadow,
+} from "@utilities/shared-core";
 import React from "react";
 import {
   ImageBackground,

@@ -24,7 +24,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "jest --config=../../jest.config.js",
+    "test": "jest --config=../../jest.config.js --watchAll=false",
     "test:watch": "jest --config=../../jest.config.js --watch",
     "test:coverage": "jest --config=../../jest.config.js --coverage",
     "test:auth": "jest --config=../../jest.config.js --testPathPattern=auth"

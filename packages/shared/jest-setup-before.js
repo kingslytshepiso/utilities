@@ -13,6 +13,25 @@ global.__ExpoImportMetaRegistry = {};
 
 // Mock global Web APIs that Expo Winter runtime tries to access
 // These are needed because Jest's jsdom environment doesn't include all Web APIs
+// CRITICAL: These must be defined BEFORE expo modules load
+if (typeof global.TextDecoder === "undefined") {
+  global.TextDecoder = class TextDecoder {
+    constructor() {
+      this.decode = jest.fn((input) => String(input));
+    }
+  };
+}
+
+if (typeof global.TextEncoder === "undefined") {
+  global.TextEncoder = class TextEncoder {
+    constructor() {
+      this.encode = jest.fn(
+        (input) => new Uint8Array(Buffer.from(String(input)))
+      );
+    }
+  };
+}
+
 if (typeof global.TextDecoderStream === "undefined") {
   global.TextDecoderStream = class TextDecoderStream {
     constructor() {
@@ -39,8 +58,61 @@ jest.mock("expo", () => ({
 // Mock expo-winter-runtime before it's imported
 // Note: Mock files are in root __mocks__/ directory and mapped via moduleNameMapper in jest.config.js
 // These jest.mock() calls ensure early mocking, while moduleNameMapper ensures Jest finds the mock files
-jest.mock("expo-winter-runtime");
-jest.mock("expo/src/winter/runtime.native");
-jest.mock("expo/build/winter");
-
-
+jest.mock("expo-winter-runtime", () => ({}));
+// Mock the entire expo/src/winter directory to prevent sub-module imports
+jest.mock(
+  "expo/src/winter/runtime.native",
+  () => ({
+    __esModule: true,
+    default: {
+      installGlobals: jest.fn(),
+    },
+    installGlobals: jest.fn(),
+  }),
+  { virtual: true }
+);
+// Mock expo/src/winter sub-modules
+jest.mock(
+  "expo/src/winter/TextDecoder",
+  () => ({
+    TextDecoder: global.TextDecoder || class TextDecoder {},
+  }),
+  { virtual: true }
+);
+jest.mock(
+  "expo/src/winter/TextDecoderStream",
+  () => ({
+    TextDecoderStream: global.TextDecoderStream || class TextDecoderStream {},
+    TextEncoderStream: global.TextEncoderStream || class TextEncoderStream {},
+  }),
+  { virtual: true }
+);
+// Mock installGlobal to prevent it from trying to require sub-modules
+jest.mock(
+  "expo/src/winter/installGlobal",
+  () => ({
+    installGlobal: jest.fn((name, factory) => {
+      // Silently install globals without requiring sub-modules
+      if (typeof global[name] === "undefined") {
+        global[name] = factory();
+      }
+    }),
+  }),
+  { virtual: true }
+);
+jest.mock(
+  "expo/src/winter/FormData",
+  () => ({
+    installFormDataPatch: jest.fn(),
+  }),
+  { virtual: true }
+);
+jest.mock(
+  "expo/src/winter/url",
+  () => ({
+    URL: global.URL || class URL {},
+    URLSearchParams: global.URLSearchParams || class URLSearchParams {},
+  }),
+  { virtual: true }
+);
+jest.mock("expo/build/winter", () => ({}));

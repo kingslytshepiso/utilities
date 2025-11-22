@@ -3,7 +3,7 @@
  * Implementation of IAuthProvider for Supabase
  */
 
-import { authConfig } from "@/config/auth.config";
+import { authConfig } from "../config/auth.config";
 import {
   AuthSession,
   IAuthProvider,
@@ -14,7 +14,7 @@ import {
   SignInCredentials,
   SignUpCredentials,
   User,
-} from "@/types/auth";
+} from "../types/auth";
 import { createClient, Session, SupabaseClient } from "@supabase/supabase-js";
 import * as WebBrowser from "expo-web-browser";
 import { Platform } from "react-native";

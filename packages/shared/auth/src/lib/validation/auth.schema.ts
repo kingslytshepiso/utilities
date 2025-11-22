@@ -3,7 +3,7 @@
  * Yup schemas for validating auth forms
  */
 
-import { authConfig } from "@/config/auth.config";
+import { authConfig } from "../../config/auth.config";
 import * as yup from "yup";
 
 /**

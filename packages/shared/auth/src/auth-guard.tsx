@@ -3,12 +3,8 @@
  * Higher-order component for protecting specific screens
  */
 
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useAuth } from "@/contexts/auth-context";
-import { usePaperTheme } from "@/hooks/use-theme-color";
-import { gutters } from "@/utils";
+import { ThemedText, ThemedView, IconSymbol, usePaperTheme, gutters } from "@utilities/shared-core";
+import { useAuth } from "./auth-context";
 import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
