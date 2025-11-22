@@ -80,6 +80,8 @@ npm start
 
 ### **Option 2: Use Monorepo for Development**
 
+> **Note:** The root workspace is a tooling/packaging layer only; there is no Expo `app.json` here anymore. Always run `npm start` from inside the chosen package (`packages/basic`, `packages/auth`, or `packages/full`) or use the workspace scripts below.
+
 ```bash
 # Clone the repository
 git clone https://github.com/kingslytshepiso/utilities.git
@@ -207,6 +209,12 @@ npm run build
 # Watch mode for development
 npm run dev
 ```
+
+## 🧪 **Testing**
+
+- **Central config**: `jest.config.js` at the repo root defines all presets, module mappings, and coverage roots so every workspace uses the same test surface.
+- **Shared setup**: `jest.setup.js` loads `packages/shared/jest.setup.js` plus some root-only helpers to mock the theme context, `structuredClone`, and suppressed `act()` warnings.
+- **Template scripts**: Each template package runs `jest --config=../../jest.config.js` so you never need to maintain a second Jest config in every workspace.
 
 ## 🔧 **Adding New Features**
 
